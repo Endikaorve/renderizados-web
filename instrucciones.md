@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Configurar una serie de mini-proyectos que demuestren diferentes tipos de renderizado web (CSR, SSR, SSG, ISR, RSC, Islands, Streaming y Edge), utilizando un listado de productos con buscador como caso de ejemplo común.
+Configurar una serie de mini-proyectos que demuestren diferentes tipos de renderizado web (CSR, SSR, SSG, ISR, RSC, Islands, Streaming y Edge), utilizando un listado de Pokémon con buscador como caso de ejemplo común. Usaremos la PokeAPI para obtener datos de los 151 Pokémon originales.
 
 ## Estructura General Recomendada: Monorepo con Yarn Workspaces
 
@@ -13,7 +13,7 @@ renderizados-web/               # Directorio actual
 ├── package.json                # Configuración principal
 ├── yarn.lock                   # Archivo de bloqueo de dependencias
 ├── datos/                      # API compartida o datos mock (opcional)
-│   └── productos.json          # Datos comunes para todos los demos
+│   └── pokemon.json            # Datos comunes para todos los demos (caché opcional)
 ├── apps/
 │   ├── csr/                    # Demo de Client-Side Rendering
 │   │   ├── package.json
@@ -143,19 +143,27 @@ renderizados-web/               # Directorio actual
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-function ListadoProductos() {
+function ListadoPokemon() {
   const [busqueda, setBusqueda] = useState("");
 
   // Carga de datos en el cliente
-  const { data: productos = [], isLoading } = useQuery({
-    queryKey: ["productos"],
-    queryFn: () => fetch("/api/productos").then((res) => res.json()),
+  const { data, isLoading } = useQuery({
+    queryKey: ["pokemon"],
+    queryFn: async () => {
+      const response = await fetch(
+        "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+      );
+      const data = await response.json();
+      return data.results;
+    },
   });
 
   // Filtrado en el cliente
-  const productosFiltrados = productos.filter((producto) =>
-    producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
-  );
+  const pokemonFiltrados = data
+    ? data.filter((pokemon) =>
+        pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
+      )
+    : [];
 
   return (
     <div>
@@ -166,25 +174,31 @@ function ListadoProductos() {
         type="text"
         value={busqueda}
         onChange={(e) => setBusqueda(e.target.value)}
-        placeholder="Buscar productos..."
+        placeholder="Buscar Pokémon..."
       />
 
       {isLoading ? (
         <p>Cargando...</p>
       ) : (
         <ul>
-          {productosFiltrados.map((producto) => (
-            <li key={producto.id}>
-              {producto.nombre} - €{producto.precio}
-            </li>
-          ))}
+          {pokemonFiltrados.map((pokemon, index) => {
+            // Extraer el ID del Pokémon de la URL
+            const pokemonId =
+              pokemon.url.split("/")[pokemon.url.split("/").length - 2];
+
+            return (
+              <li key={pokemon.name}>
+                #{pokemonId} - {pokemon.name}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
   );
 }
 
-export default ListadoProductos;
+export default ListadoPokemon;
 ```
 
 **Dependencias a instalar**:
@@ -206,22 +220,24 @@ import { useState } from "react";
 
 // Datos cargados en servidor
 export async function getServerSideProps() {
-  const res = await fetch("https://api.ejemplo.com/productos");
-  const productos = await res.json();
+  const res = await fetch(
+    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+  );
+  const data = await res.json();
 
   return {
     props: {
-      productos,
+      pokemon: data.results,
     },
   };
 }
 
-export default function Productos({ productos }) {
+export default function ListadoPokemon({ pokemon }) {
   const [busqueda, setBusqueda] = useState("");
 
   // Filtrado en cliente después del renderizado inicial
-  const productosFiltrados = productos.filter((producto) =>
-    producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  const pokemonFiltrados = pokemon.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
   );
 
   return (
@@ -236,15 +252,21 @@ export default function Productos({ productos }) {
         type="text"
         value={busqueda}
         onChange={(e) => setBusqueda(e.target.value)}
-        placeholder="Buscar productos..."
+        placeholder="Buscar Pokémon..."
       />
 
       <ul>
-        {productosFiltrados.map((producto) => (
-          <li key={producto.id}>
-            {producto.nombre} - €{producto.precio}
-          </li>
-        ))}
+        {pokemonFiltrados.map((pokemon) => {
+          // Extraer el ID del Pokémon de la URL
+          const pokemonId =
+            pokemon.url.split("/")[pokemon.url.split("/").length - 2];
+
+          return (
+            <li key={pokemon.name}>
+              #{pokemonId} - {pokemon.name}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
@@ -263,23 +285,25 @@ import { useState } from "react";
 
 // Datos cargados durante el build
 export async function getStaticProps() {
-  const res = await fetch("https://api.ejemplo.com/productos");
-  const productos = await res.json();
+  const res = await fetch(
+    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+  );
+  const data = await res.json();
 
   return {
     props: {
-      productos,
+      pokemon: data.results,
       generadoEn: new Date().toISOString(),
     },
   };
 }
 
-export default function Productos({ productos, generadoEn }) {
+export default function ListadoPokemon({ pokemon, generadoEn }) {
   const [busqueda, setBusqueda] = useState("");
 
   // Filtrado en cliente
-  const productosFiltrados = productos.filter((producto) =>
-    producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  const pokemonFiltrados = pokemon.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
   );
 
   return (
@@ -291,15 +315,21 @@ export default function Productos({ productos, generadoEn }) {
         type="text"
         value={busqueda}
         onChange={(e) => setBusqueda(e.target.value)}
-        placeholder="Buscar productos..."
+        placeholder="Buscar Pokémon..."
       />
 
       <ul>
-        {productosFiltrados.map((producto) => (
-          <li key={producto.id}>
-            {producto.nombre} - €{producto.precio}
-          </li>
-        ))}
+        {pokemonFiltrados.map((pokemon) => {
+          // Extraer el ID del Pokémon de la URL
+          const pokemonId =
+            pokemon.url.split("/")[pokemon.url.split("/").length - 2];
+
+          return (
+            <li key={pokemon.name}>
+              #{pokemonId} - {pokemon.name}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
@@ -318,32 +348,34 @@ import { useState } from "react";
 
 // Datos cargados con regeneración incremental
 export async function getStaticProps() {
-  const res = await fetch("https://api.ejemplo.com/productos");
-  const productos = await res.json();
+  const res = await fetch(
+    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+  );
+  const data = await res.json();
 
   return {
     props: {
-      productos,
+      pokemon: data.results,
       generadoEn: new Date().toISOString(),
     },
-    // Regeneración automática cada 1 minuto (para demostración)
-    revalidate: 60,
+    // Regeneración automática cada 1 hora (para demostración)
+    revalidate: 3600,
   };
 }
 
-export default function Productos({ productos, generadoEn }) {
+export default function ListadoPokemon({ pokemon, generadoEn }) {
   const [busqueda, setBusqueda] = useState("");
 
   // Filtrado en cliente
-  const productosFiltrados = productos.filter((producto) =>
-    producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  const pokemonFiltrados = pokemon.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
   );
 
   return (
     <div>
       <h1>ISR: Incremental Static Regeneration</h1>
       <p>
-        Página estática que se regenera cada minuto. Última generación:{" "}
+        Página estática que se regenera cada hora. Última generación:{" "}
         {generadoEn}
       </p>
 
@@ -351,15 +383,21 @@ export default function Productos({ productos, generadoEn }) {
         type="text"
         value={busqueda}
         onChange={(e) => setBusqueda(e.target.value)}
-        placeholder="Buscar productos..."
+        placeholder="Buscar Pokémon..."
       />
 
       <ul>
-        {productosFiltrados.map((producto) => (
-          <li key={producto.id}>
-            {producto.nombre} - €{producto.precio}
-          </li>
-        ))}
+        {pokemonFiltrados.map((pokemon) => {
+          // Extraer el ID del Pokémon de la URL
+          const pokemonId =
+            pokemon.url.split("/")[pokemon.url.split("/").length - 2];
+
+          return (
+            <li key={pokemon.name}>
+              #{pokemonId} - {pokemon.name}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
@@ -374,14 +412,18 @@ export default function Productos({ productos, generadoEn }) {
 
 ```jsx
 // apps/rsc/app/page.jsx
-import { ProductSearch } from "./product-search";
+import { PokemonSearch } from "./pokemon-search";
 
 // Componente servidor - se ejecuta siempre en el servidor
 export default async function Page() {
   // Fetch desde el servidor
-  const productos = await fetch("https://api.ejemplo.com/productos", {
-    cache: "no-store",
-  }).then((res) => res.json());
+  const response = await fetch(
+    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0",
+    {
+      cache: "no-store",
+    }
+  );
+  const data = await response.json();
 
   return (
     <div>
@@ -392,21 +434,21 @@ export default async function Page() {
       </p>
 
       {/* Componente cliente para la búsqueda */}
-      <ProductSearch productos={productos} />
+      <PokemonSearch pokemon={data.results} />
     </div>
   );
 }
 
-// apps/rsc/app/product-search.jsx
+// apps/rsc/app/pokemon-search.jsx
 ("use client");
 
 import { useState } from "react";
 
-export function ProductSearch({ productos }) {
+export function PokemonSearch({ pokemon }) {
   const [busqueda, setBusqueda] = useState("");
 
-  const productosFiltrados = productos.filter((producto) =>
-    producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  const pokemonFiltrados = pokemon.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
   );
 
   return (
@@ -415,15 +457,21 @@ export function ProductSearch({ productos }) {
         type="text"
         value={busqueda}
         onChange={(e) => setBusqueda(e.target.value)}
-        placeholder="Buscar productos..."
+        placeholder="Buscar Pokémon..."
       />
 
       <ul>
-        {productosFiltrados.map((producto) => (
-          <li key={producto.id}>
-            {producto.nombre} - €{producto.precio}
-          </li>
-        ))}
+        {pokemonFiltrados.map((pokemon) => {
+          // Extraer el ID del Pokémon de la URL
+          const pokemonId =
+            pokemon.url.split("/")[pokemon.url.split("/").length - 2];
+
+          return (
+            <li key={pokemon.name}>
+              #{pokemonId} - {pokemon.name}
+            </li>
+          );
+        })}
       </ul>
     </>
   );
@@ -440,8 +488,9 @@ export function ProductSearch({ productos }) {
 ---
 // apps/islands/src/pages/index.astro
 // Código que se ejecuta sólo en servidor
-const response = await fetch('https://api.ejemplo.com/productos');
-const productos = await response.json();
+const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=151&offset=0');
+const data = await response.json();
+const pokemon = data.results;
 ---
 
 <html lang="es">
@@ -455,7 +504,7 @@ const productos = await response.json();
       <p>Solo el buscador es interactivo, el resto es HTML estático.</p>
 
       <!-- Componente React hidratado como "isla" -->
-      <ProductSearch client:load productos={productos} />
+      <PokemonSearch client:load pokemon={pokemon} />
 
       <!-- Contenido estático que no necesita JavaScript -->
       <footer>
@@ -467,19 +516,19 @@ const productos = await response.json();
 
 <script>
   // Importación del componente de React
-  import ProductSearch from '../components/ProductSearch.jsx';
+  import PokemonSearch from '../components/PokemonSearch.jsx';
 </script>
 ```
 
 ```jsx
-// apps/islands/src/components/ProductSearch.jsx
+// apps/islands/src/components/PokemonSearch.jsx
 import { useState } from "react";
 
-export default function ProductSearch({ productos }) {
+export default function PokemonSearch({ pokemon }) {
   const [busqueda, setBusqueda] = useState("");
 
-  const productosFiltrados = productos.filter((producto) =>
-    producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  const pokemonFiltrados = pokemon.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
   );
 
   return (
@@ -488,15 +537,21 @@ export default function ProductSearch({ productos }) {
         type="text"
         value={busqueda}
         onChange={(e) => setBusqueda(e.target.value)}
-        placeholder="Buscar productos..."
+        placeholder="Buscar Pokémon..."
       />
 
       <ul>
-        {productosFiltrados.map((producto) => (
-          <li key={producto.id}>
-            {producto.nombre} - €{producto.precio}
-          </li>
-        ))}
+        {pokemonFiltrados.map((pokemon) => {
+          // Extraer el ID del Pokémon de la URL
+          const pokemonId =
+            pokemon.url.split("/")[pokemon.url.split("/").length - 2];
+
+          return (
+            <li key={pokemon.name}>
+              #{pokemonId} - {pokemon.name}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
