@@ -1,0 +1,66 @@
+# Dependencias
+node_modules
+**/node_modules
+**/.pnp
+.pnp.js
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Archivos de compilación y distribución
+dist
+dist-ssr
+**/dist
+**/dist-ssr
+**/build
+*.local
+.output
+.next
+out
+
+# Archivos temporales
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.vercel
+.env*.local
+.cache
+.turbo
+
+# Archivos de configuración local de editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.sublime-workspace
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Archivos de cobertura de pruebas
+coverage
+.nyc_output
+
+# Astro
+.astro/
+
+# Otros archivos específicos por framework
+.nuxt
+.nitro
+.svelte-kit 

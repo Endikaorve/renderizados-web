@@ -1,0 +1,49 @@
+:root {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: #213547;
+  background-color: #f0f2f5;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+  }
+  .card {
+    background-color: #2b2b2b !important;
+  }
+  .pokemon-item {
+    background-color: #333 !important;
+  }
+  .pokemon-name {
+    color: #4ecdc4 !important;
+  }
+  .search-input {
+    background-color: #333;
+    color: white;
+    border-color: #555;
+  }
+  .search-input:focus {
+    border-color: #4ecdc4;
+  }
+}

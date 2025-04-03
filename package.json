@@ -1,0 +1,29 @@
+{
+  "name": "renderizados-web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Endikaorve/renderizados-web.git",
+  "author": "Endika Orube <endikaorve@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "api"
+  ],
+  "scripts": {
+    "dev": "concurrently \"yarn workspace csr dev\" \"yarn workspace ssr dev\" \"yarn workspace ssg dev\" \"yarn workspace isr dev\" \"yarn workspace rsc dev\" \"yarn workspace islands dev\" \"yarn workspace streaming dev\" \"yarn workspace edge dev\"",
+    "dev:csr": "yarn workspace csr dev",
+    "dev:ssr": "yarn workspace ssr dev",
+    "dev:ssg": "yarn workspace ssg dev",
+    "dev:isr": "yarn workspace isr dev",
+    "dev:rsc": "yarn workspace rsc dev",
+    "dev:islands": "yarn workspace islands dev",
+    "dev:streaming": "yarn workspace streaming dev",
+    "dev:edge": "yarn workspace edge dev",
+    "build": "yarn workspaces run build"
+  },
+  "dependencies": {
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3"
+  }
+}
