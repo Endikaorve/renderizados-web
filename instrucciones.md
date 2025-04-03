@@ -8,7 +8,7 @@ Configurar una serie de mini-proyectos que demuestren diferentes tipos de render
 
 ### Estructura de Directorios
 
-renderizado-demos/
+renderizados-web/ # Directorio actual
 ├── package.json # Configuración principal
 ├── yarn.lock # Archivo de bloqueo de dependencias
 ├── datos/ # API compartida o datos mock (opcional)
@@ -44,9 +44,9 @@ renderizado-demos/
 
 1. **Inicializar el monorepo**:
 
+   Ya estamos en el directorio `renderizados-web`, así que inicializamos el proyecto allí:
+
    ```bash
-   mkdir renderizado-demos
-   cd renderizado-demos
    yarn init -y
    ```
 
@@ -61,7 +61,13 @@ renderizado-demos/
 
    > Nota: Es recomendable añadir `"private": true` para evitar la publicación accidental del monorepo.
 
-2. **Crear proyectos para cada tipo de renderizado**:
+2. **Crear la estructura de directorios**:
+
+   ```bash
+   mkdir -p apps datos
+   ```
+
+3. **Crear proyectos para cada tipo de renderizado**:
 
    ```bash
    # Para CSR con Vite
@@ -96,7 +102,7 @@ renderizado-demos/
    > yarn global add create-astro
    > ```
 
-3. **Instalar dependencias comunes**:
+4. **Instalar dependencias comunes**:
 
    ```bash
    yarn add -W concurrently cross-env
@@ -104,7 +110,7 @@ renderizado-demos/
 
    > Nota: El flag `-W` en Yarn indica que la instalación debe realizarse en el workspace raíz.
 
-4. **Configurar scripts en package.json raíz**:
+5. **Configurar scripts en package.json raíz**:
    ```json
    {
      "scripts": {
@@ -522,4 +528,135 @@ export default function ProductSearch({ productos }) {
    yarn install --force
    ```
 
-5. **Para Vercel**: Asegúrate de configurar cada proyecto en Vercel apuntando al directorio específico dentro de apps/.
+## Despliegue en Vercel
+
+Para desplegar los mini-proyectos en Vercel, la mejor estrategia es configurar cada proyecto por separado, aunque todos estén en el mismo repositorio. Esto te permitirá tener URLs independientes y configuraciones específicas para cada tipo de renderizado.
+
+### Preparación del Repositorio
+
+Antes de desplegar, asegúrate de que tu repositorio esté correctamente estructurado:
+
+1. **Configura un repositorio Git**:
+
+   ```bash
+   git init
+   git add .
+   git commit -m "Configuración inicial del monorepo"
+   ```
+
+2. **Sube el repositorio a GitHub, GitLab o Bitbucket**:
+
+   ```bash
+   git remote add origin <URL_DE_TU_REPOSITORIO>
+   git push -u origin main
+   ```
+
+### Configuración en Vercel
+
+Para cada mini-proyecto en tu monorepo:
+
+1. **Inicia sesión en Vercel** y haz clic en "Add New..." → "Project"
+
+2. **Importa el repositorio** donde está tu monorepo
+
+3. **Configura cada proyecto individualmente** con la siguiente información:
+
+   - **Nombre del Proyecto**: Elige un nombre descriptivo (ej: "renderizados-csr")
+   - **Framework Preset**: Selecciona automáticamente basado en el proyecto (Vite, Next.js, Astro)
+   - **Root Directory**: Especifica la ruta al subdirectorio del proyecto (ej: "apps/csr")
+   - **Build Command**: Usa el comando específico para cada framework o `yarn build`
+   - **Output Directory**: Depende del framework (generalmente `dist` para Vite, `.next` para Next.js)
+   - **Environment Variables**: Configura las que necesite cada proyecto
+
+4. **Haz clic en "Deploy"**
+
+### Ejemplo de Configuración para Cada Tipo de Proyecto
+
+#### Para CSR (Vite)
+
+- **Root Directory**: `apps/csr`
+- **Build Command**: `yarn build`
+- **Output Directory**: `dist`
+
+#### Para SSR/SSG/ISR (Next.js Pages Router)
+
+- **Root Directory**: `apps/ssr` (o ssg, isr)
+- **Build Command**: `yarn build`
+- **Output Directory**: `.next`
+
+#### Para RSC/Streaming/Edge (Next.js App Router)
+
+- **Root Directory**: `apps/rsc` (o streaming, edge)
+- **Build Command**: `yarn build`
+- **Output Directory**: `.next`
+
+#### Para Islands (Astro)
+
+- **Root Directory**: `apps/islands`
+- **Build Command**: `yarn build`
+- **Output Directory**: `dist`
+
+### Acceso a los Mini-Proyectos
+
+Una vez desplegados, cada mini-proyecto tendrá su propia URL en Vercel:
+
+- **CSR**: https://renderizados-csr.vercel.app
+- **SSR**: https://renderizados-ssr.vercel.app
+- **SSG**: https://renderizados-ssg.vercel.app
+- **ISR**: https://renderizados-isr.vercel.app
+- **RSC**: https://renderizados-rsc.vercel.app
+- **Islands**: https://renderizados-islands.vercel.app
+- **Streaming**: https://renderizados-streaming.vercel.app
+- **Edge**: https://renderizados-edge.vercel.app
+
+### Configuración Avanzada
+
+#### Monorepos y Vercel
+
+Para optimizar el despliegue en monorepos, puedes crear un archivo `vercel.json` en la raíz del proyecto para configurar aspectos como:
+
+```json
+{
+  "workspaceCommand": "yarn install",
+  "installCommand": "yarn install"
+}
+```
+
+#### Automatización con Vercel CLI
+
+Si deseas automatizar el despliegue de todos los proyectos, puedes usar Vercel CLI:
+
+1. **Instala Vercel CLI**:
+
+   ```bash
+   yarn global add vercel
+   ```
+
+2. **Crea un script para desplegar todos los proyectos**:
+
+   ```bash
+   # deploy-all.sh
+   #!/bin/bash
+
+   projects=("csr" "ssr" "ssg" "isr" "rsc" "islands" "streaming" "edge")
+
+   for project in "${projects[@]}"; do
+     echo "Deploying $project..."
+     (cd apps/$project && vercel --prod)
+   done
+   ```
+
+3. **Haz el script ejecutable**:
+   ```bash
+   chmod +x deploy-all.sh
+   ```
+
+#### Dominio Personalizado
+
+También puedes configurar un dominio personalizado y subdominios para cada mini-proyecto:
+
+- **CSR**: https://csr.tudominio.com
+- **SSR**: https://ssr.tudominio.com
+- **SSG**: https://ssg.tudominio.com
+
+Y así sucesivamente.
