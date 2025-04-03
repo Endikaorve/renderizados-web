@@ -8,37 +8,39 @@ Configurar una serie de mini-proyectos que demuestren diferentes tipos de render
 
 ### Estructura de Directorios
 
-renderizados-web/ # Directorio actual
-├── package.json # Configuración principal
-├── yarn.lock # Archivo de bloqueo de dependencias
-├── datos/ # API compartida o datos mock (opcional)
-│ └── productos.json # Datos comunes para todos los demos
+```
+renderizados-web/               # Directorio actual
+├── package.json                # Configuración principal
+├── yarn.lock                   # Archivo de bloqueo de dependencias
+├── datos/                      # API compartida o datos mock (opcional)
+│   └── productos.json          # Datos comunes para todos los demos
 ├── apps/
-│ ├── csr/ # Demo de Client-Side Rendering
-│ │ ├── package.json
-│ │ └── ...
-│ ├── ssr/ # Demo de Server-Side Rendering
-│ │ ├── package.json
-│ │ └── ...
-│ ├── ssg/ # Demo de Static Site Generation
-│ │ ├── package.json
-│ │ └── ...
-│ ├── isr/ # Demo de Incremental Static Regeneration
-│ │ ├── package.json
-│ │ └── ...
-│ ├── rsc/ # Demo de React Server Components
-│ │ ├── package.json
-│ │ └── ...
-│ ├── islands/ # Demo de Islands Architecture
-│ │ ├── package.json
-│ │ └── ...
-│ ├── streaming/ # Demo de Streaming SSR
-│ │ ├── package.json
-│ │ └── ...
-│ └── edge/ # Demo de Edge Rendering
-│ ├── package.json
-│ └── ...
-└── README.md # Documentación y guía de uso
+│   ├── csr/                    # Demo de Client-Side Rendering
+│   │   ├── package.json
+│   │   └── ...
+│   ├── ssr/                    # Demo de Server-Side Rendering
+│   │   ├── package.json
+│   │   └── ...
+│   ├── ssg/                    # Demo de Static Site Generation
+│   │   ├── package.json
+│   │   └── ...
+│   ├── isr/                    # Demo de Incremental Static Regeneration
+│   │   ├── package.json
+│   │   └── ...
+│   ├── rsc/                    # Demo de React Server Components
+│   │   ├── package.json
+│   │   └── ...
+│   ├── islands/                # Demo de Islands Architecture
+│   │   ├── package.json
+│   │   └── ...
+│   ├── streaming/              # Demo de Streaming SSR
+│   │   ├── package.json
+│   │   └── ...
+│   └── edge/                   # Demo de Edge Rendering
+│       ├── package.json
+│       └── ...
+└── README.md                   # Documentación y guía de uso
+```
 
 ### Configuración Inicial
 
