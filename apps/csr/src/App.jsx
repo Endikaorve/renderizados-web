@@ -41,9 +41,14 @@ function ListadoPokemon() {
           className="search-input"
         />
 
-        {isLoading && <p>Cargando Pokémon...</p>}
+        {isLoading && (
+          <div className="loading-container">
+            <div className="loading-message">Cargando...</div>
+            <div className="loading-spinner"></div>
+          </div>
+        )}
 
-        {isError && <p className="error">Error: {error.message}</p>}
+        {isError && <div className="error">Error: {error.message}</div>}
 
         {!isLoading && !isError && (
           <ul className="pokemon-list">
@@ -63,7 +68,7 @@ function ListadoPokemon() {
         )}
 
         {!isLoading && !isError && pokemonFiltrados.length === 0 && (
-          <p>No se encontraron Pokémon con ese nombre</p>
+          <p className="no-results">No se encontraron Pokémon con ese nombre</p>
         )}
       </div>
     </div>

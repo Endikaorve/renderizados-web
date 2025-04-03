@@ -26,7 +26,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    color: rgba(255, 255, 255, 0.87);
+    color: rgba(255, 255, 255, 0.95);
     background-color: #242424;
   }
   .card {
@@ -36,7 +36,19 @@ body {
     background-color: #333 !important;
   }
   .pokemon-name {
-    color: #4ecdc4 !important;
+    color: #5eeee2 !important;
+    font-weight: bold !important;
+  }
+  .pokemon-id {
+    color: #e0e0e0 !important;
+    background-color: #444 !important;
+  }
+  p {
+    color: #f0f0f0 !important;
+  }
+  h1 {
+    color: #ff5a67 !important;
+    text-shadow: 0 0 8px rgba(255, 90, 103, 0.3);
   }
   .search-input {
     background-color: #333;
@@ -44,6 +56,19 @@ body {
     border-color: #555;
   }
   .search-input:focus {
-    border-color: #4ecdc4;
+    border-color: #5eeee2;
+  }
+  .error {
+    color: #ff5a67 !important;
+  }
+  .no-results {
+    color: #cccccc !important;
+  }
+  .loading-message {
+    color: #5eeee2 !important;
+  }
+  .loading-spinner {
+    border-color: rgba(94, 238, 226, 0.2) !important;
+    border-top-color: #5eeee2 !important;
   }
 }
