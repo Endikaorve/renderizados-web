@@ -144,9 +144,11 @@ export default async function DetallePokemonPage({
 export async function generateMetadata({
   params,
 }: {
-  params: { nombre: string };
+  params: Promise<{ nombre: string }>;
 }) {
+  const { nombre } = await params;
+
   return {
-    title: `Detalles de ${params.nombre} - PPR Demo`,
+    title: `Detalles de ${nombre} - PPR Demo`,
   };
 }
