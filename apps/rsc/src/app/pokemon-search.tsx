@@ -1,20 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
-interface Pokemon {
+interface PokemonListItem {
   name: string;
   url: string;
 }
 
 interface PokemonSearchProps {
-  pokemon: Pokemon[];
+  initialPokemon: PokemonListItem[];
 }
 
-export function PokemonSearch({ pokemon }: PokemonSearchProps) {
+export function PokemonSearch({ initialPokemon }: PokemonSearchProps) {
   const [busqueda, setBusqueda] = useState("");
 
-  const pokemonFiltrados = pokemon.filter((pokemon) =>
+  const pokemonFiltrados = initialPokemon.filter((pokemon) =>
     pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
   );
 
@@ -28,19 +29,19 @@ export function PokemonSearch({ pokemon }: PokemonSearchProps) {
         className="search-input"
       />
 
-      {pokemonFiltrados.length === 0 ? (
-        <p className="no-results">No se encontraron Pokémon con ese nombre</p>
+      {pokemonFiltrados.length === 0 && busqueda ? (
+        <p className="no-results">No se encontraron Pokémon con ese nombre.</p>
       ) : (
         <ul className="pokemon-list">
           {pokemonFiltrados.map((pokemon) => {
-            // Extraer el ID del Pokémon de la URL
             const pokemonId =
               pokemon.url.split("/")[pokemon.url.split("/").length - 2];
-
             return (
               <li key={pokemon.name} className="pokemon-item">
-                <span className="pokemon-id">#{pokemonId}</span>
-                <span className="pokemon-name">{pokemon.name}</span>
+                <Link href={`/detalles/${pokemon.name}`}>
+                  <span className="pokemon-id">#{pokemonId}</span>
+                  <span className="pokemon-name">{pokemon.name}</span>
+                </Link>
               </li>
             );
           })}
