@@ -6,7 +6,12 @@ function ListadoPokemon() {
   const [busqueda, setBusqueda] = useState("");
 
   // Carga de datos en el cliente
-  const { data, isLoading, isError, error } = useQuery({
+  const {
+    data: pokemon,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["pokemon"],
     queryFn: async () => {
       const response = await fetch(
@@ -21,8 +26,8 @@ function ListadoPokemon() {
   });
 
   // Filtrado en el cliente
-  const pokemonFiltrados = data
-    ? data.filter((pokemon) =>
+  const pokemonFiltrados = pokemon
+    ? pokemon.filter((pokemon) =>
         pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
       )
     : [];
