@@ -25,9 +25,7 @@ interface PokemonDetail {
 }
 
 interface PageProps {
-  params: {
-    nombre: string;
-  };
+  params: Promise<{ nombre: string }> & { nombre: string };
 }
 
 async function fetchPokemonDetail(
@@ -89,10 +87,7 @@ export default async function DetallePokemonPage({ params }: PageProps) {
   );
 }
 
-// Opcional: Generar metadatos dinámicos para el <title>
 export async function generateMetadata({ params }: PageProps) {
-  // Podríamos hacer fetch aquí de nuevo, o reusar la lógica si es posible
-  // Para simplificar, solo usamos el nombre del parámetro
   return {
     title: `Detalles de ${params.nombre}`,
   };
