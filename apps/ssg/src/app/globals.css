@@ -24,3 +24,239 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+  }
+
+  .dark {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+@layer base {
+  body {
+    color: rgb(var(--foreground-rgb));
+    background-color: #f4f5f8;
+  }
+}
+
+/* Estilos similares a CSR */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 500px;
+  padding: 0.75rem 1rem;
+  font-size: 1.1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #646cff;
+}
+
+.pokemon-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pokemon-item {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pokemon-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pokemon-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0.5rem 0;
+  text-transform: capitalize;
+}
+
+.pokemon-id {
+  font-size: 0.9rem;
+  color: #999;
+  background-color: #f0f0f0;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.loading-message {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #646cff;
+  margin-bottom: 1rem;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.loading-spinner {
+  border: 6px solid rgba(100, 108, 255, 0.2);
+  border-top: 6px solid #646cff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+.error {
+  color: #e53935;
+  font-size: 1.2rem;
+  padding: 1rem;
+  background-color: rgba(229, 57, 53, 0.1);
+  border-radius: 8px;
+}
+
+.no-results {
+  font-size: 1.2rem;
+  color: #666;
+  font-style: italic;
+  margin: 2rem 0;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (max-width: 768px) {
+  .pokemon-list {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .container {
+    padding: 1rem;
+  }
+}
+
+/* Estilos para la página de detalles */
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: #646cff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.pokemon-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.pokemon-image {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  padding: 1rem;
+}
+
+.pokemon-info {
+  text-align: left;
+  width: 100%;
+  max-width: 400px;
+}
+
+.pokemon-info p {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.generation-time {
+  margin-top: 2rem;
+  color: #777;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 640px) {
+  .pokemon-detail {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
+}

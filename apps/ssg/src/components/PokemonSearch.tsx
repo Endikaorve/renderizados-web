@@ -21,29 +21,34 @@ export default function PokemonSearch({ initialPokemon }: PokemonSearchProps) {
   );
 
   return (
-    <>
+    <div className="card">
       <input
         type="text"
         value={busqueda}
         onChange={(e) => setBusqueda(e.target.value)}
         placeholder="Buscar Pokémon..."
-        className="p-2 border rounded-md w-full max-w-md mb-4"
+        className="search-input"
       />
 
-      <ul className="space-y-2">
+      <ul className="pokemon-list">
         {pokemonFiltrados.map((pokemon) => {
           const pokemonId =
             pokemon.url.split("/")[pokemon.url.split("/").length - 2];
 
           return (
-            <li key={pokemon.name} className="hover:bg-gray-100 p-2 rounded">
-              <Link href={`/detalles/${pokemon.name}`} className="block">
-                #{pokemonId} - {pokemon.name}
+            <li key={pokemon.name} className="pokemon-item">
+              <Link href={`/detalles/${pokemon.name}`}>
+                <span className="pokemon-id">#{pokemonId}</span>
+                <span className="pokemon-name">{pokemon.name}</span>
               </Link>
             </li>
           );
         })}
       </ul>
-    </>
+
+      {pokemonFiltrados.length === 0 && busqueda && (
+        <p className="no-results">No se encontraron Pokémon con ese nombre.</p>
+      )}
+    </div>
   );
 }

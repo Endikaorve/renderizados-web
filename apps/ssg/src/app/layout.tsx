@@ -16,20 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={inter.className}>
-        <header className="bg-blue-600 text-white p-4">
-          <div className="container mx-auto">
-            <h1 className="text-2xl font-bold">
-              Demo: Static Site Generation (SSG)
-            </h1>
-            <p className="text-sm mt-1">
-              Generación Estática con Next.js App Router - Las páginas se
-              generan durante el build
-            </p>
-          </div>
-        </header>
-        {children}
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

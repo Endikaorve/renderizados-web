@@ -55,41 +55,36 @@ export default async function DetallePokemon({ params }: PokemonPageProps) {
   }
 
   return (
-    <div className="flex flex-col items-center p-8 max-w-2xl mx-auto">
-      <Link href="/" className="self-start mb-4 text-blue-500 hover:underline">
-        Volver al listado
-      </Link>
-
-      <div className="w-full bg-white rounded-lg shadow-md p-6">
-        <h1 className="text-3xl font-bold mb-4 text-center">
-          Detalles (SSG): {pokemon.name}
-        </h1>
-
-        <div className="flex justify-center mb-6">
+    <div className="container">
+      <div className="card">
+        <Link href="/" className="back-link">
+          Volver al listado
+        </Link>
+        <h1>Detalles (SSG): {pokemon.name}</h1>
+        <div className="pokemon-detail">
           <img
             src={pokemon.sprites.front_default}
             alt={pokemon.name}
-            className="w-32 h-32"
+            className="pokemon-image"
           />
-        </div>
-
-        <div className="space-y-2">
-          <p className="text-lg">
-            <span className="font-bold">ID:</span> {pokemon.id}
-          </p>
-          <p className="text-lg">
-            <span className="font-bold">Altura:</span> {pokemon.height / 10} m
-          </p>
-          <p className="text-lg">
-            <span className="font-bold">Peso:</span> {pokemon.weight / 10} kg
-          </p>
-          <p className="text-lg">
-            <span className="font-bold">Tipos:</span>{" "}
-            {pokemon.types.map((t: PokemonType) => t.type.name).join(", ")}
-          </p>
-          <p className="text-sm text-gray-500 mt-4">
-            <small>Página generada/revalidada el: {generadoEn}</small>
-          </p>
+          <div className="pokemon-info">
+            <p>
+              <strong>ID:</strong> {pokemon.id}
+            </p>
+            <p>
+              <strong>Altura:</strong> {pokemon.height / 10} m
+            </p>
+            <p>
+              <strong>Peso:</strong> {pokemon.weight / 10} kg
+            </p>
+            <p>
+              <strong>Tipos:</strong>{" "}
+              {pokemon.types.map((t: PokemonType) => t.type.name).join(", ")}
+            </p>
+            <p className="generation-time">
+              <small>Página generada/revalidada el: {generadoEn}</small>
+            </p>
+          </div>
         </div>
       </div>
     </div>

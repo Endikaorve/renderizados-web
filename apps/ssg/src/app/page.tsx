@@ -26,16 +26,12 @@ export default async function Home() {
   const { pokemon, generadoEn } = await getData();
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-8">
-      <h1 className="text-3xl font-bold mb-4">SSG: Static Site Generation</h1>
-      <p className="mb-8">
-        Página generada durante el build. Generada el: {generadoEn}
-      </p>
+    <div className="container">
+      <h1>SSG: Static Site Generation</h1>
+      <p>Página generada durante el build. Generada el: {generadoEn}</p>
 
-      <div className="w-full max-w-2xl">
-        {/* Componente cliente para la búsqueda */}
-        <PokemonSearch initialPokemon={pokemon} />
-      </div>
-    </main>
+      {/* Componente cliente para la búsqueda */}
+      <PokemonSearch initialPokemon={pokemon} />
+    </div>
   );
 }
