@@ -424,45 +424,72 @@ export default function DetallePokemon({ pokemon, error, nombrePokemon }) {
 
 ### 3. Static Site Generation (SSG)
 
-**Tecnologías**: Next.js con Pages Router
+**Tecnologías**: Next.js con App Router
 
 **Implementación principal**:
 
-**Listado (Modificado)**:
+**Página Principal (App Router)**:
 
 ```jsx
-// apps/ssg/pages/index.js
-import { useState } from "react";
-import Link from "next/link"; // Importar Link
+// apps/ssg/app/page.jsx
+import PokemonSearch from "@/components/PokemonSearch";
 
-// Datos cargados durante el build
-export async function getStaticProps() {
+// Datos generados estáticamente durante el build
+export async function generateStaticParams() {
+  return [];
+}
+
+async function getData() {
   const res = await fetch(
-    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0",
+    { cache: "force-cache" } // force-cache es el equivalente al comportamiento de SSG en App Router
   );
-  const data = await res.json();
 
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  const data = await res.json();
   return {
-    props: {
-      pokemon: data.results,
-      generadoEn: new Date().toISOString(),
-    },
+    pokemon: data.results,
+    generadoEn: new Date().toISOString(),
   };
 }
 
-export default function ListadoPokemon({ pokemon, generadoEn }) {
-  const [busqueda, setBusqueda] = useState("");
-
-  // Filtrado en cliente
-  const pokemonFiltrados = pokemon.filter((pokemon) =>
-    pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
-  );
+export default async function Home() {
+  const { pokemon, generadoEn } = await getData();
 
   return (
     <div>
       <h1>SSG: Static Site Generation</h1>
       <p>Página generada durante el build. Generada el: {generadoEn}</p>
 
+      {/* Componente cliente para la búsqueda */}
+      <PokemonSearch initialPokemon={pokemon} />
+    </div>
+  );
+}
+```
+
+**Componente de Búsqueda (Client Component)**:
+
+```jsx
+// apps/ssg/components/PokemonSearch.jsx
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+
+export default function PokemonSearch({ initialPokemon }) {
+  const [busqueda, setBusqueda] = useState("");
+
+  // Filtrado en cliente
+  const pokemonFiltrados = initialPokemon.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
+  );
+
+  return (
+    <>
       <input
         type="text"
         value={busqueda}
@@ -478,107 +505,68 @@ export default function ListadoPokemon({ pokemon, generadoEn }) {
           return (
             <li key={pokemon.name}>
               <Link href={`/detalles/${pokemon.name}`}>
-                {" "}
-                {/* Enlace añadido */}
-                <a>
-                  #{pokemonId} - {pokemon.name}
-                </a>
+                #{pokemonId} - {pokemon.name}
               </Link>
             </li>
           );
         })}
       </ul>
-    </div>
+    </>
   );
 }
 ```
 
-**Página de Detalles (Nuevo)**:
+**Página de Detalles (Server Component)**:
 
 ```jsx
-// apps/ssg/pages/detalles/[nombre].js
+// apps/ssg/app/detalles/[nombre]/page.jsx
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 // Define qué rutas se pre-renderizarán en el build
-export async function getStaticPaths() {
+export async function generateStaticParams() {
   const res = await fetch(
-    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0",
+    { cache: "force-cache" }
   );
   const data = await res.json();
-  const paths = data.results.map((pokemon) => ({
-    params: { nombre: pokemon.name },
-  }));
 
-  return {
-    paths,
-    fallback: false, // Si se accede a una ruta no definida aquí, devuelve 404
-  };
+  return data.results.map((pokemon) => ({
+    nombre: pokemon.name,
+  }));
 }
 
 // Obtiene datos para una página específica durante el build
-export async function getStaticProps({ params }) {
-  const { nombre } = params;
-  let pokemon = null;
-  let error = null;
-
+async function getPokemonData(nombre) {
   try {
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`);
-    if (!res.ok) {
-      // Con fallback: 'blocking', esto causará un 404 si la API falla
-      throw new Error("Pokémon no encontrado");
-    }
-    pokemon = await res.json();
-  } catch (err) {
-    error = err.message;
-    // Si falla la generación, devolvemos notFound: true para un 404
-    // O podríamos devolver el error en props si queremos mostrar un mensaje custom
-    return { notFound: true, revalidate: 60 }; // Reintentar en 60s
-  }
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`, {
+      cache: "force-cache",
+      next: { revalidate: 60 }, // Opcional: revalidar cada 60s
+    });
 
-  return {
-    props: {
-      pokemon,
-      error, // Podría ser null si todo va bien
-      nombrePokemon: nombre,
-      generadoEn: new Date().toISOString(),
-    },
-    // Revalida la página cada 60 segundos (para demostración)
-    // En producción podría ser más largo (e.g., 3600 para 1 hora)
-    revalidate: 60,
-  };
+    if (!res.ok) {
+      return null;
+    }
+
+    return res.json();
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
 }
 
-export default function DetallePokemon({
-  pokemon,
-  error,
-  nombrePokemon,
-  generadoEn,
-}) {
-  if (error) {
-    return (
-      <div>
-        <Link href="/">
-          <a>Volver al listado</a>
-        </Link>
-        <h1>Error</h1>
-        <p>
-          No se pudo encontrar el Pokémon "{nombrePokemon}" durante el build:{" "}
-          {error}
-        </p>
-        <p>Generado el: {generadoEn}</p>
-      </div>
-    );
-  }
+export default async function DetallePokemon({ params }) {
+  const { nombre } = params;
+  const pokemon = await getPokemonData(nombre);
+  const generadoEn = new Date().toISOString();
 
   if (!pokemon) {
-    return <p>Cargando...</p>; // No debería pasar con fallback: false
+    notFound();
   }
 
   return (
     <div>
-      <Link href="/">
-        <a>Volver al listado</a>
-      </Link>
+      <Link href="/">Volver al listado</Link>
       <h1>Detalles (SSG): {pokemon.name}</h1>
       <img src={pokemon.sprites.front_default} alt={pokemon.name} />
       <p>ID: {pokemon.id}</p>
