@@ -90,9 +90,9 @@ async function getDynamicPokemonStats(
 export default async function DetallePokemonPage({
   params,
 }: {
-  params: { nombre: string };
+  params: Promise<{ nombre: string }>;
 }) {
-  const { nombre } = params;
+  const { nombre } = await params;
 
   // Datos estáticos (prerenderizados)
   const pokemon = await getStaticPokemonData(nombre);
