@@ -428,9 +428,12 @@ export default function DetallePokemon({ pokemon, error, nombrePokemon }) {
 
 **Implementación principal**:
 
+**Listado (Modificado)**:
+
 ```jsx
 // apps/ssg/pages/index.js
 import { useState } from "react";
+import Link from "next/link"; // Importar Link
 
 // Datos cargados durante el build
 export async function getStaticProps() {
@@ -469,17 +472,122 @@ export default function ListadoPokemon({ pokemon, generadoEn }) {
 
       <ul>
         {pokemonFiltrados.map((pokemon) => {
-          // Extraer el ID del Pokémon de la URL
           const pokemonId =
             pokemon.url.split("/")[pokemon.url.split("/").length - 2];
 
           return (
             <li key={pokemon.name}>
-              #{pokemonId} - {pokemon.name}
+              <Link href={`/detalles/${pokemon.name}`}>
+                {" "}
+                {/* Enlace añadido */}
+                <a>
+                  #{pokemonId} - {pokemon.name}
+                </a>
+              </Link>
             </li>
           );
         })}
       </ul>
+    </div>
+  );
+}
+```
+
+**Página de Detalles (Nuevo)**:
+
+```jsx
+// apps/ssg/pages/detalles/[nombre].js
+import Link from "next/link";
+
+// Define qué rutas se pre-renderizarán en el build
+export async function getStaticPaths() {
+  const res = await fetch(
+    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+  );
+  const data = await res.json();
+  const paths = data.results.map((pokemon) => ({
+    params: { nombre: pokemon.name },
+  }));
+
+  return {
+    paths,
+    fallback: false, // Si se accede a una ruta no definida aquí, devuelve 404
+  };
+}
+
+// Obtiene datos para una página específica durante el build
+export async function getStaticProps({ params }) {
+  const { nombre } = params;
+  let pokemon = null;
+  let error = null;
+
+  try {
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`);
+    if (!res.ok) {
+      // Con fallback: 'blocking', esto causará un 404 si la API falla
+      throw new Error("Pokémon no encontrado");
+    }
+    pokemon = await res.json();
+  } catch (err) {
+    error = err.message;
+    // Si falla la generación, devolvemos notFound: true para un 404
+    // O podríamos devolver el error en props si queremos mostrar un mensaje custom
+    return { notFound: true, revalidate: 60 }; // Reintentar en 60s
+  }
+
+  return {
+    props: {
+      pokemon,
+      error, // Podría ser null si todo va bien
+      nombrePokemon: nombre,
+      generadoEn: new Date().toISOString(),
+    },
+    // Revalida la página cada 60 segundos (para demostración)
+    // En producción podría ser más largo (e.g., 3600 para 1 hora)
+    revalidate: 60,
+  };
+}
+
+export default function DetallePokemon({
+  pokemon,
+  error,
+  nombrePokemon,
+  generadoEn,
+}) {
+  if (error) {
+    return (
+      <div>
+        <Link href="/">
+          <a>Volver al listado</a>
+        </Link>
+        <h1>Error</h1>
+        <p>
+          No se pudo encontrar el Pokémon "{nombrePokemon}" durante el build:{" "}
+          {error}
+        </p>
+        <p>Generado el: {generadoEn}</p>
+      </div>
+    );
+  }
+
+  if (!pokemon) {
+    return <p>Cargando...</p>; // No debería pasar con fallback: false
+  }
+
+  return (
+    <div>
+      <Link href="/">
+        <a>Volver al listado</a>
+      </Link>
+      <h1>Detalles (SSG): {pokemon.name}</h1>
+      <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+      <p>ID: {pokemon.id}</p>
+      <p>Altura: {pokemon.height / 10} m</p>
+      <p>Peso: {pokemon.weight / 10} kg</p>
+      <p>Tipos: {pokemon.types.map((t) => t.type.name).join(", ")}</p>
+      <p>
+        <small>Página generada/revalidada el: {generadoEn}</small>
+      </p>
     </div>
   );
 }
@@ -491,9 +599,12 @@ export default function ListadoPokemon({ pokemon, generadoEn }) {
 
 **Implementación principal**:
 
+**Listado (Modificado)**:
+
 ```jsx
 // apps/isr/pages/index.js
 import { useState } from "react";
+import Link from "next/link"; // Importar Link
 
 // Datos cargados con regeneración incremental
 export async function getStaticProps() {
@@ -537,17 +648,138 @@ export default function ListadoPokemon({ pokemon, generadoEn }) {
 
       <ul>
         {pokemonFiltrados.map((pokemon) => {
-          // Extraer el ID del Pokémon de la URL
           const pokemonId =
             pokemon.url.split("/")[pokemon.url.split("/").length - 2];
 
           return (
             <li key={pokemon.name}>
-              #{pokemonId} - {pokemon.name}
+              <Link href={`/detalles/${pokemon.name}`}>
+                {" "}
+                {/* Enlace añadido */}
+                <a>
+                  #{pokemonId} - {pokemon.name}
+                </a>
+              </Link>
             </li>
           );
         })}
       </ul>
+    </div>
+  );
+}
+```
+
+**Página de Detalles (Nuevo)**:
+
+```jsx
+// apps/isr/pages/detalles/[nombre].js
+import Link from "next/link";
+import { useRouter } from "next/router";
+
+// Define qué rutas se pre-renderizarán inicialmente
+export async function getStaticPaths() {
+  const res = await fetch(
+    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+  );
+  const data = await res.json();
+  const paths = data.results.map((pokemon) => ({
+    params: { nombre: pokemon.name },
+  }));
+
+  return {
+    paths,
+    // fallback: 'blocking' genera la página en el servidor si no existe
+    // y la cachea para futuras peticiones. Es bueno para ISR.
+    // fallback: true mostraría un estado de carga mientras se genera.
+    fallback: "blocking",
+  };
+}
+
+// Obtiene datos para una página específica, con revalidación
+export async function getStaticProps({ params }) {
+  const { nombre } = params;
+  let pokemon = null;
+  let error = null;
+
+  try {
+    console.log(`ISR: Regenerando/Generando página para ${nombre}...`);
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`);
+    if (!res.ok) {
+      // Con fallback: 'blocking', esto causará un 404 si la API falla
+      throw new Error("Pokémon no encontrado");
+    }
+    pokemon = await res.json();
+  } catch (err) {
+    error = err.message;
+    // Si falla la generación, devolvemos notFound: true para un 404
+    // O podríamos devolver el error en props si queremos mostrar un mensaje custom
+    return { notFound: true, revalidate: 60 }; // Reintentar en 60s
+  }
+
+  return {
+    props: {
+      pokemon,
+      error, // Podría ser null si todo va bien
+      nombrePokemon: nombre,
+      generadoEn: new Date().toISOString(),
+    },
+    // Revalida la página cada 60 segundos (para demostración)
+    // En producción podría ser más largo (e.g., 3600 para 1 hora)
+    revalidate: 60,
+  };
+}
+
+export default function DetallePokemon({
+  pokemon,
+  error,
+  nombrePokemon,
+  generadoEn,
+}) {
+  const router = useRouter();
+
+  // Con fallback: true, se mostraría esto mientras carga
+  // if (router.isFallback) {
+  //   return <div>Cargando Pokémon...</div>;
+  // }
+
+  // El error se maneja con notFound: true en getStaticProps ahora
+  // Pero podríamos tener un caso donde devolvemos props con error
+  if (error && !pokemon) {
+    return (
+      <div>
+        <Link href="/">
+          <a>Volver al listado</a>
+        </Link>
+        <h1>Error</h1>
+        <p>
+          No se pudo cargar el Pokémon "{nombrePokemon}": {error}
+        </p>
+        <p>
+          <small>Intento de generación: {generadoEn}</small>
+        </p>
+      </div>
+    );
+  }
+
+  // Si fallback es 'blocking', pokemon siempre debería estar definido aquí si no hubo error
+  if (!pokemon) {
+    return <p>Pokémon no encontrado (inesperado).</p>;
+  }
+
+  return (
+    <div>
+      <Link href="/">
+        <a>Volver al listado</a>
+      </Link>
+      <h1>Detalles (ISR): {pokemon.name}</h1>
+      <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+      <p>ID: {pokemon.id}</p>
+      <p>Altura: {pokemon.height / 10} m</p>
+      <p>Peso: {pokemon.weight / 10} kg</p>
+      <p>Tipos: {pokemon.types.map((t) => t.type.name).join(", ")}</p>
+      <p>
+        <small>Página generada/revalidada el: {generadoEn}</small>
+      </p>
     </div>
   );
 }
