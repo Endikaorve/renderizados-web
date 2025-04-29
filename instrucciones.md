@@ -1366,6 +1366,260 @@ export async function generateMetadata({ params }) {
 }
 ```
 
+### 9. Partial Prerendering (PPR)
+
+**Tecnologías**: Next.js App Router (con PPR)
+
+**Implementación principal**: Similar a RSC, pero utilizando la funcionalidad de Partial Prerendering para combinar contenido estático y dinámico.
+
+> **Nota importante**: Este proyecto debe utilizar el mismo diseño visual que el proyecto RSC. Asegúrate de mantener consistencia en estilos, colores y estructura de componentes.
+
+**Página Principal (Server Component con PPR)**:
+
+```jsx
+// apps/ppr/app/page.jsx
+import PokemonSearch from "@/components/PokemonSearch";
+import { unstable_noStore as noStore } from "next/cache";
+
+async function fetchStaticContent() {
+  // Este contenido se prerenderiza en el build
+  return {
+    title: "PPR: Partial Prerendering",
+    description:
+      "Combinación de contenido estático y dinámico en una sola página.",
+  };
+}
+
+async function fetchPokemonList() {
+  // Marcar esta parte como dinámica (no se prerenderiza)
+  noStore();
+
+  // Simular una carga lenta para demostrar PPR
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  const response = await fetch(
+    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+  );
+  if (!response.ok) throw new Error("Failed to fetch Pokemon list");
+  const data = await response.json();
+  return data.results;
+}
+
+export default async function Page() {
+  // Esta parte se ejecuta durante la construcción
+  const staticContent = await fetchStaticContent();
+
+  // Esta parte se ejecuta en tiempo de solicitud
+  const pokemonList = await fetchPokemonList();
+
+  return (
+    <div>
+      <h1>{staticContent.title}</h1>
+      <p>{staticContent.description}</p>
+      <p className="timestamp">
+        Tiempo de carga dinámico: {new Date().toISOString()}
+      </p>
+
+      {/* Componente cliente para la búsqueda */}
+      <PokemonSearch initialPokemon={pokemonList} />
+    </div>
+  );
+}
+```
+
+**Componente de Búsqueda (Client Component)**:
+
+```jsx
+// apps/ppr/components/PokemonSearch.jsx
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+
+export default function PokemonSearch({ initialPokemon }) {
+  const [busqueda, setBusqueda] = useState("");
+
+  const pokemonFiltrados = initialPokemon.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
+  );
+
+  return (
+    <>
+      <input
+        type="text"
+        value={busqueda}
+        onChange={(e) => setBusqueda(e.target.value)}
+        placeholder="Buscar Pokémon..."
+      />
+      <ul>
+        {pokemonFiltrados.map((pokemon) => {
+          const pokemonId =
+            pokemon.url.split("/")[pokemon.url.split("/").length - 2];
+          return (
+            <li key={pokemon.name}>
+              <Link href={`/detalles/${pokemon.name}`}>
+                #{pokemonId} - {pokemon.name}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
+}
+```
+
+**Página de Detalles (Server Component con partes estáticas y dinámicas)**:
+
+```jsx
+// apps/ppr/app/detalles/[nombre]/page.jsx
+import Link from "next/link";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { unstable_noStore as noStore } from "next/cache";
+import StaticPokemonInfo from "@/components/StaticPokemonInfo";
+
+// Define qué rutas se pre-renderizarán en el build
+export async function generateStaticParams() {
+  const res = await fetch(
+    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+  );
+  const data = await res.json();
+
+  // Solo prerenderizar los primeros 20 para demostración
+  return data.results.slice(0, 20).map((pokemon) => ({
+    nombre: pokemon.name,
+  }));
+}
+
+// Función para obtener datos estáticos (prerenderizados)
+async function getStaticPokemonData(nombre) {
+  try {
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`);
+    if (!res.ok) return null;
+    return res.json();
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
+
+// Función para obtener datos dinámicos (en tiempo de ejecución)
+async function getDynamicPokemonStats(nombre) {
+  // Marcar esta parte como dinámica
+  noStore();
+
+  // Simular una carga lenta para demostrar PPR
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+
+  try {
+    // En una aplicación real, esto podría ser una llamada a otra API
+    // o a una base de datos para obtener estadísticas actualizadas
+    return {
+      lastViewed: new Date().toISOString(),
+      popularityRank: Math.floor(Math.random() * 151) + 1,
+      randomFact: `Dato curioso generado dinámicamente para ${nombre}`,
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      lastViewed: new Date().toISOString(),
+      popularityRank: "N/A",
+      randomFact: "No se pudieron cargar datos dinámicos",
+    };
+  }
+}
+
+export default async function DetallePokemonPage({ params }) {
+  const { nombre } = params;
+
+  // Datos estáticos (prerenderizados)
+  const pokemon = await getStaticPokemonData(nombre);
+
+  if (!pokemon) {
+    notFound();
+  }
+
+  // Datos dinámicos (cargados en tiempo de ejecución)
+  const dynamicStats = await getDynamicPokemonStats(nombre);
+
+  return (
+    <div>
+      <Link href="/">Volver al listado</Link>
+
+      {/* Sección estática prerenderizada */}
+      <div className="static-section">
+        <h1>Detalles (PPR): {pokemon.name}</h1>
+        <Image
+          src={pokemon.sprites.front_default}
+          alt={pokemon.name}
+          width={150}
+          height={150}
+          priority
+        />
+        <StaticPokemonInfo pokemon={pokemon} />
+      </div>
+
+      {/* Sección dinámica cargada en tiempo de ejecución */}
+      <div className="dynamic-section">
+        <h2>Estadísticas en vivo</h2>
+        <p>Última visualización: {dynamicStats.lastViewed}</p>
+        <p>Ranking de popularidad: #{dynamicStats.popularityRank}</p>
+        <p>Dato curioso: {dynamicStats.randomFact}</p>
+      </div>
+    </div>
+  );
+}
+
+export async function generateMetadata({ params }) {
+  return {
+    title: `Detalles de ${params.nombre} - PPR Demo`,
+  };
+}
+```
+
+**Componente de Información Estática (Server Component)**:
+
+```jsx
+// apps/ppr/components/StaticPokemonInfo.jsx
+export default function StaticPokemonInfo({ pokemon }) {
+  return (
+    <div className="pokemon-info">
+      <p>ID: {pokemon.id}</p>
+      <p>Altura: {pokemon.height / 10} m</p>
+      <p>Peso: {pokemon.weight / 10} kg</p>
+      <p>Tipos: {pokemon.types.map((t) => t.type.name).join(", ")}</p>
+      <p className="static-note">
+        <small>Esta información se prerenderizó estáticamente.</small>
+      </p>
+    </div>
+  );
+}
+```
+
+**Configuración para habilitar PPR (next.config.js)**:
+
+```js
+// apps/ppr/next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    ppr: true, // Habilitar Partial Prerendering
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "raw.githubusercontent.com",
+        pathname: "**",
+      },
+    ],
+  },
+};
+
+module.exports = nextConfig;
+```
+
 ## Notas Adicionales para Yarn Workspaces
 
 1. **Instalación de dependencias en un workspace específico**:
