@@ -39,6 +39,7 @@ export default async function Page() {
   }
 
   const data = await response.json();
+  const pokemon = data.results;
 
   return (
     <div className="container">
@@ -51,7 +52,7 @@ export default async function Page() {
       <div className="card">
         {/* Componente cliente para la búsqueda */}
         <Suspense fallback={<LoadingPokemon />}>
-          <PokemonSearch pokemon={data.results} />
+          <PokemonSearch pokemon={pokemon} />
         </Suspense>
       </div>
     </div>
