@@ -226,13 +226,20 @@ p {
   margin-top: 2rem;
 }
 
-.pokemon-image {
+.pokemon-image-container {
   width: 150px;
   height: 150px;
-  object-fit: contain;
   background-color: #f0f0f0;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 1rem;
+  position: relative;
+}
+
+.pokemon-image {
+  object-fit: contain;
 }
 
 .pokemon-info {

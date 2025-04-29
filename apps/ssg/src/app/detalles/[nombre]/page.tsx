@@ -1,5 +1,13 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
+
+// Definir tipos
+interface PokemonType {
+  type: {
+    name: string;
+  };
+}
 
 // Define qué rutas se pre-renderizarán en el build
 export async function generateStaticParams() {
@@ -14,45 +22,33 @@ export async function generateStaticParams() {
   }));
 }
 
-// Obtiene datos para una página específica durante el build
-async function getPokemonData(nombre: string) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ nombre: string }>;
+}) {
+  // Esperar a que los parámetros estén disponibles
+  const resolvedParams = await params;
+  const nombre = resolvedParams.nombre;
+  let pokemon;
+
   try {
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`, {
       cache: "force-cache",
-      next: { revalidate: 60 }, // Opcional: revalidar cada 60s
+      next: { revalidate: 60 },
     });
 
     if (!res.ok) {
-      return null;
+      notFound();
     }
 
-    return res.json();
+    pokemon = await res.json();
   } catch (err) {
     console.error(err);
-    return null;
-  }
-}
-
-interface PokemonPageProps {
-  params: {
-    nombre: string;
-  };
-}
-
-interface PokemonType {
-  type: {
-    name: string;
-  };
-}
-
-export default async function DetallePokemon({ params }: PokemonPageProps) {
-  const { nombre } = params;
-  const pokemon = await getPokemonData(nombre);
-  const generadoEn = new Date().toISOString();
-
-  if (!pokemon) {
     notFound();
   }
+
+  const generadoEn = new Date().toISOString();
 
   return (
     <div className="container">
@@ -62,11 +58,16 @@ export default async function DetallePokemon({ params }: PokemonPageProps) {
         </Link>
         <h1>Detalles (SSG): {pokemon.name}</h1>
         <div className="pokemon-detail">
-          <img
-            src={pokemon.sprites.front_default}
-            alt={pokemon.name}
-            className="pokemon-image"
-          />
+          <div className="pokemon-image-container">
+            <Image
+              src={pokemon.sprites.front_default}
+              alt={pokemon.name}
+              className="pokemon-image"
+              width={150}
+              height={150}
+              priority
+            />
+          </div>
           <div className="pokemon-info">
             <p>
               <strong>ID:</strong> {pokemon.id}
