@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 
 // Definir interfaces para los datos del Pokémon
 interface PokemonTypeInfo {
@@ -72,11 +73,12 @@ export default async function DetallePokemonPage({ params }: PageProps) {
         {/* Reutilizar clases si aplican */}
         <Link href="/">Volver al listado</Link>
         <h1>Detalles (RSC): {pokemon.name}</h1>
-        <img
+        <Image
           src={pokemon.sprites.front_default}
           alt={pokemon.name}
           width={96}
           height={96}
+          priority
         />
         <p>ID: {pokemon.id}</p>
         <p>Altura: {pokemon.height / 10} m</p>
