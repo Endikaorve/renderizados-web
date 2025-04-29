@@ -134,21 +134,24 @@ renderizados-web/               # Directorio actual
 
 ### 1. Client-Side Rendering (CSR)
 
-**Tecnologías**: React + Vite + React Query
+**Tecnologías**: React + Vite + React Query + React Router
 
 **Implementación principal**:
 
+**Listado (Modificado)**:
+
 ```jsx
-// apps/csr/src/App.jsx
+// apps/csr/src/components/ListadoPokemon.jsx
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom"; // Importar Link
 
 function ListadoPokemon() {
   const [busqueda, setBusqueda] = useState("");
 
   // Carga de datos en el cliente
   const { data, isLoading } = useQuery({
-    queryKey: ["pokemon"],
+    queryKey: ["pokemonList"],
     queryFn: async () => {
       const response = await fetch(
         "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
@@ -181,14 +184,15 @@ function ListadoPokemon() {
         <p>Cargando...</p>
       ) : (
         <ul>
-          {pokemonFiltrados.map((pokemon, index) => {
-            // Extraer el ID del Pokémon de la URL
+          {pokemonFiltrados.map((pokemon) => {
             const pokemonId =
               pokemon.url.split("/")[pokemon.url.split("/").length - 2];
-
             return (
               <li key={pokemon.name}>
-                #{pokemonId} - {pokemon.name}
+                <Link to={`/detalles/${pokemon.name}`}>
+                  {" "}
+                  {/* Enlace añadido */}#{pokemonId} - {pokemon.name}
+                </Link>
               </li>
             );
           })}
@@ -201,11 +205,81 @@ function ListadoPokemon() {
 export default ListadoPokemon;
 ```
 
+**Página de Detalles (Nuevo)**:
+
+```jsx
+// apps/csr/src/pages/DetallePokemon.jsx
+import { useParams, Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+
+function DetallePokemon() {
+  const { nombre } = useParams(); // Obtener nombre de la URL
+
+  const { data: pokemon, isLoading } = useQuery({
+    queryKey: ["pokemonDetail", nombre],
+    queryFn: async () => {
+      const response = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${nombre}`
+      );
+      if (!response.ok) {
+        throw new Error("Pokémon no encontrado");
+      }
+      return response.json();
+    },
+    enabled: !!nombre, // Solo ejecutar si 'nombre' existe
+  });
+
+  if (isLoading) return <p>Cargando detalles...</p>;
+  if (!pokemon) return <p>Pokémon no encontrado.</p>;
+
+  return (
+    <div>
+      <Link to="/">Volver al listado</Link>
+      <h1>Detalles de: {pokemon.name}</h1>
+      <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+      <p>ID: {pokemon.id}</p>
+      <p>Altura: {pokemon.height / 10} m</p>
+      <p>Peso: {pokemon.weight / 10} kg</p>
+      <p>Tipos: {pokemon.types.map((t) => t.type.name).join(", ")}</p>
+    </div>
+  );
+}
+
+export default DetallePokemon;
+```
+
+**Configuración de Rutas (Nuevo/Modificado)**:
+
+```jsx
+// apps/csr/src/main.jsx o apps/csr/src/App.jsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ListadoPokemon from "./components/ListadoPokemon"; // Asumiendo que se movió
+import DetallePokemon from "./pages/DetallePokemon";
+
+const queryClient = new QueryClient();
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<ListadoPokemon />} />
+          <Route path="/detalles/:nombre" element={<DetallePokemon />} />
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
+  </React.StrictMode>
+);
+```
+
 **Dependencias a instalar**:
 
 ```bash
 cd apps/csr
-yarn add @tanstack/react-query
+yarn add @tanstack/react-query react-router-dom
 ```
 
 ### 2. Server-Side Rendering (SSR)
@@ -214,9 +288,12 @@ yarn add @tanstack/react-query
 
 **Implementación principal**:
 
+**Listado (Modificado)**:
+
 ```jsx
 // apps/ssr/pages/index.js
 import { useState } from "react";
+import Link from "next/link"; // Importar Link de Next.js
 
 // Datos cargados en servidor
 export async function getServerSideProps() {
@@ -257,17 +334,89 @@ export default function ListadoPokemon({ pokemon }) {
 
       <ul>
         {pokemonFiltrados.map((pokemon) => {
-          // Extraer el ID del Pokémon de la URL
           const pokemonId =
             pokemon.url.split("/")[pokemon.url.split("/").length - 2];
-
           return (
             <li key={pokemon.name}>
-              #{pokemonId} - {pokemon.name}
+              <Link href={`/detalles/${pokemon.name}`}>
+                {" "}
+                {/* Enlace añadido */}
+                <a>
+                  #{pokemonId} - {pokemon.name}
+                </a>
+              </Link>
             </li>
           );
         })}
       </ul>
+    </div>
+  );
+}
+```
+
+**Página de Detalles (Nuevo)**:
+
+```jsx
+// apps/ssr/pages/detalles/[nombre].js
+import Link from "next/link";
+
+export async function getServerSideProps(context) {
+  const { nombre } = context.params;
+  let pokemon = null;
+  let error = null;
+
+  try {
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`);
+    if (!res.ok) {
+      throw new Error("Pokémon no encontrado");
+    }
+    pokemon = await res.json();
+  } catch (err) {
+    error = err.message;
+    // Opcional: podrías redirigir o devolver un estado 404
+    // context.res.statusCode = 404;
+  }
+
+  return {
+    props: {
+      pokemon,
+      error,
+      nombrePokemon: nombre, // Pasar el nombre para mostrarlo incluso si hay error
+    },
+  };
+}
+
+export default function DetallePokemon({ pokemon, error, nombrePokemon }) {
+  if (error) {
+    return (
+      <div>
+        <Link href="/">
+          <a>Volver al listado</a>
+        </Link>
+        <h1>Error</h1>
+        <p>
+          No se pudo cargar el Pokémon "{nombrePokemon}": {error}
+        </p>
+      </div>
+    );
+  }
+
+  if (!pokemon) {
+    // Esto no debería ocurrir si no hay error, pero por si acaso
+    return <p>Cargando...</p>;
+  }
+
+  return (
+    <div>
+      <Link href="/">
+        <a>Volver al listado</a>
+      </Link>
+      <h1>Detalles de: {pokemon.name}</h1>
+      <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+      <p>ID: {pokemon.id}</p>
+      <p>Altura: {pokemon.height / 10} m</p>
+      <p>Peso: {pokemon.weight / 10} kg</p>
+      <p>Tipos: {pokemon.types.map((t) => t.type.name).join(", ")}</p>
     </div>
   );
 }
