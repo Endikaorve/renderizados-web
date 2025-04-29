@@ -791,44 +791,58 @@ export default function DetallePokemon({
 
 **Implementación principal**:
 
+**Página Principal (Server Component - Modificado levemente para claridad)**:
+
 ```jsx
 // apps/rsc/app/page.jsx
 import { PokemonSearch } from "./pokemon-search";
 
 // Componente servidor - se ejecuta siempre en el servidor
-export default async function Page() {
-  // Fetch desde el servidor
+async function fetchPokemonList() {
   const response = await fetch(
     "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0",
     {
-      cache: "no-store",
+      // cache: 'no-store', // Descomentar para forzar fetch en cada request (SSR-like)
+      // next: { revalidate: 3600 } // Opcional: Revalidar cada hora (ISR-like)
+      cache: "force-cache", // Comportamiento por defecto (SSG-like)
     }
   );
+  if (!response.ok) throw new Error("Failed to fetch Pokemon list");
   const data = await response.json();
+  return data.results;
+}
+
+export default async function Page() {
+  const pokemonList = await fetchPokemonList();
 
   return (
     <div>
       <h1>RSC: React Server Components</h1>
       <p>
-        El listado es un componente servidor, el buscador es un componente
-        cliente.
+        El listado inicial se carga en el servidor. El buscador es un componente
+        cliente interactivo.
       </p>
 
       {/* Componente cliente para la búsqueda */}
-      <PokemonSearch pokemon={data.results} />
+      <PokemonSearch initialPokemon={pokemonList} />
     </div>
   );
 }
+```
 
+**Componente de Búsqueda (Client Component - Modificado)**:
+
+```jsx
 // apps/rsc/app/pokemon-search.jsx
-("use client");
+"use client";
 
 import { useState } from "react";
+import Link from "next/link"; // Importar Link
 
-export function PokemonSearch({ pokemon }) {
+export function PokemonSearch({ initialPokemon }) {
   const [busqueda, setBusqueda] = useState("");
 
-  const pokemonFiltrados = pokemon.filter((pokemon) =>
+  const pokemonFiltrados = initialPokemon.filter((pokemon) =>
     pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
   );
 
@@ -843,13 +857,15 @@ export function PokemonSearch({ pokemon }) {
 
       <ul>
         {pokemonFiltrados.map((pokemon) => {
-          // Extraer el ID del Pokémon de la URL
           const pokemonId =
             pokemon.url.split("/")[pokemon.url.split("/").length - 2];
 
           return (
             <li key={pokemon.name}>
-              #{pokemonId} - {pokemon.name}
+              <Link href={`/detalles/${pokemon.name}`}>
+                {" "}
+                {/* Enlace añadido */}#{pokemonId} - {pokemon.name}
+              </Link>
             </li>
           );
         })}
@@ -859,19 +875,77 @@ export function PokemonSearch({ pokemon }) {
 }
 ```
 
+**Página de Detalles (Server Component - Nuevo)**:
+
+```jsx
+// apps/rsc/app/detalles/[nombre]/page.jsx
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+async function fetchPokemonDetail(nombre) {
+  try {
+    const response = await fetch(
+      `https://pokeapi.co/api/v2/pokemon/${nombre}`,
+      {
+        cache: "no-store", // Asegurar que se haga fetch siempre para ver streaming
+      }
+    );
+    if (!response.ok) {
+      return null;
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return null;
+  }
+}
+
+export default async function DetallePokemonPage({ params }) {
+  const { nombre } = params;
+  const pokemon = await fetchPokemonDetail(nombre);
+
+  if (!pokemon) {
+    notFound();
+  }
+
+  return (
+    <div>
+      <Link href="/">Volver al listado</Link>
+      <h1>Detalles (RSC): {pokemon.name}</h1>
+      <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+      <p>ID: {pokemon.id}</p>
+      <p>Altura: {pokemon.height / 10} m</p>
+      <p>Peso: {pokemon.weight / 10} kg</p>
+      <p>Tipos: {pokemon.types.map((t) => t.type.name).join(", ")}</p>
+    </div>
+  );
+}
+
+export async function generateMetadata({ params }) {
+  // Esta función también se ejecuta en el Edge
+  return {
+    title: `Detalles de ${params.nombre}`,
+  };
+}
+```
+
 ### 6. Islands Architecture
 
 **Tecnologías**: Astro con React
 
 **Implementación principal**:
 
+**Página Principal (Astro - Modificada levemente)**:
+
 ```astro
 ---
 // apps/islands/src/pages/index.astro
-// Código que se ejecuta sólo en servidor
+import PokemonSearch from '../components/PokemonSearch.jsx';
+
+// Código que se ejecuta sólo en servidor durante el build (o SSR si se configura)
 const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=151&offset=0');
 const data = await response.json();
-const pokemon = data.results;
+const pokemonList = data.results;
 ---
 
 <html lang="es">
@@ -882,10 +956,10 @@ const pokemon = data.results;
   <body>
     <main>
       <h1>Islands Architecture</h1>
-      <p>Solo el buscador es interactivo, el resto es HTML estático.</p>
+      <p>Solo el buscador es interactivo (React), el resto es HTML estático.</p>
 
       <!-- Componente React hidratado como "isla" -->
-      <PokemonSearch client:load pokemon={pokemon} />
+      <PokemonSearch client:load initialPokemon={pokemonList} />
 
       <!-- Contenido estático que no necesita JavaScript -->
       <footer>
@@ -894,21 +968,19 @@ const pokemon = data.results;
     </main>
   </body>
 </html>
-
-<script>
-  // Importación del componente de React
-  import PokemonSearch from '../components/PokemonSearch.jsx';
-</script>
 ```
+
+**Componente de Búsqueda (React - Modificado)**:
 
 ```jsx
 // apps/islands/src/components/PokemonSearch.jsx
 import { useState } from "react";
 
-export default function PokemonSearch({ pokemon }) {
+// Este componente se ejecutará en el cliente
+export default function PokemonSearch({ initialPokemon }) {
   const [busqueda, setBusqueda] = useState("");
 
-  const pokemonFiltrados = pokemon.filter((pokemon) =>
+  const pokemonFiltrados = initialPokemon.filter((pokemon) =>
     pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
   );
 
@@ -923,19 +995,386 @@ export default function PokemonSearch({ pokemon }) {
 
       <ul>
         {pokemonFiltrados.map((pokemon) => {
-          // Extraer el ID del Pokémon de la URL
           const pokemonId =
             pokemon.url.split("/")[pokemon.url.split("/").length - 2];
 
           return (
             <li key={pokemon.name}>
-              #{pokemonId} - {pokemon.name}
+              {/* En Astro, usamos <a> normales para navegar entre páginas */}
+              <a href={`/detalles/${pokemon.name}`}>
+                #{pokemonId} - {pokemon.name}
+              </a>
             </li>
           );
         })}
       </ul>
     </div>
   );
+}
+```
+
+**Página de Detalles (Astro - Nuevo)**:
+
+```astro
+---
+// apps/islands/src/pages/detalles/[nombre].astro
+import type { GetStaticPaths } from 'astro';
+
+// Generar rutas estáticas para cada Pokémon en el build
+export const getStaticPaths = (async () => {
+  const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=151&offset=0');
+  const data = await response.json();
+  return data.results.map((pokemon) => ({
+    params: { nombre: pokemon.name },
+  }));
+}) satisfies GetStaticPaths;
+
+// Obtener el nombre del Pokémon de los parámetros de la URL
+const { nombre } = Astro.params;
+let pokemon = null;
+let error = null;
+
+try {
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`);
+  if (!response.ok) {
+    throw new Error('Pokémon no encontrado');
+  }
+  pokemon = await response.json();
+} catch (err) {
+  error = err.message;
+  // Astro devolverá un 404 por defecto si no encuentra el Pokémon
+  // o si getStaticPaths no define esta ruta y no hay SSR.
+}
+
+const pageTitle = pokemon ? `Detalles de ${pokemon.name}` : 'Error';
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <main>
+      <a href="/">Volver al listado</a>
+
+      {error && (
+        <>
+          <h1>Error</h1>
+          <p>No se pudo cargar el Pokémon "{nombre}": {error}</p>
+        </>
+      )}
+
+      {pokemon && (
+        <>
+          <h1>Detalles (Astro): {pokemon.name}</h1>
+          <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+          <p>ID: {pokemon.id}</p>
+          <p>Altura: {pokemon.height / 10} m</p>
+          <p>Peso: {pokemon.weight / 10} kg</p>
+          <p>Tipos: {pokemon.types.map(t => t.type.name).join(', ')}</p>
+        </>
+      )}
+    </main>
+  </body>
+</html>
+```
+
+### 7. Streaming SSR
+
+**Tecnologías**: Next.js App Router (con Suspense)
+
+**Implementación principal**: Similar a RSC, pero podemos usar Suspense explícitamente.
+
+**Página Principal (Server Component - Igual que RSC)**:
+
+```jsx
+// apps/streaming/app/page.jsx
+import { PokemonSearch } from "./pokemon-search";
+import { Suspense } from "react";
+
+async function fetchPokemonList() {
+  // Simular carga lenta para ver el streaming
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+  const response = await fetch(
+    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0",
+    { cache: "no-store" } // Forzar fetch en cada request para ver streaming
+  );
+  if (!response.ok) throw new Error("Failed to fetch Pokemon list");
+  const data = await response.json();
+  return data.results;
+}
+
+// Componente que muestra el listado y buscador
+async function Listado() {
+  const pokemonList = await fetchPokemonList();
+  return <PokemonSearch initialPokemon={pokemonList} />;
+}
+
+export default function Page() {
+  return (
+    <div>
+      <h1>Streaming SSR</h1>
+      <p>El contenido se carga y muestra usando streaming con Suspense.</p>
+      <Suspense fallback={<p>Cargando listado de Pokémon...</p>}>
+        {/* @ts-expect-error Async Server Component */}
+        <Listado />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+**Componente de Búsqueda (Client Component - Igual que RSC)**:
+
+```jsx
+// apps/streaming/app/pokemon-search.jsx
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+
+export function PokemonSearch({ initialPokemon }) {
+  const [busqueda, setBusqueda] = useState("");
+
+  const pokemonFiltrados = initialPokemon.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
+  );
+
+  return (
+    <>
+      <input
+        type="text"
+        value={busqueda}
+        onChange={(e) => setBusqueda(e.target.value)}
+        placeholder="Buscar Pokémon..."
+      />
+      <ul>
+        {pokemonFiltrados.map((pokemon) => {
+          const pokemonId =
+            pokemon.url.split("/")[pokemon.url.split("/").length - 2];
+          return (
+            <li key={pokemon.name}>
+              <Link href={`/detalles/${pokemon.name}`}>
+                #{pokemonId} - {pokemon.name}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
+}
+```
+
+**Página de Detalles (Server Component con Suspense - Nuevo)**:
+
+```jsx
+// apps/streaming/app/detalles/[nombre]/page.jsx
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+
+async function fetchPokemonDetail(nombre) {
+  // Simular carga lenta
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  try {
+    const response = await fetch(
+      `https://pokeapi.co/api/v2/pokemon/${nombre}`,
+      {
+        cache: "no-store", // Asegurar que se haga fetch siempre para ver streaming
+      }
+    );
+    if (!response.ok) {
+      return null;
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return null;
+  }
+}
+
+// Componente que muestra los detalles
+async function PokemonDetails({ nombre }) {
+  const pokemon = await fetchPokemonDetail(nombre);
+  if (!pokemon) {
+    notFound();
+  }
+  return (
+    <>
+      <h1>Detalles (Streaming): {pokemon.name}</h1>
+      <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+      <p>ID: {pokemon.id}</p>
+      <p>Altura: {pokemon.height / 10} m</p>
+      <p>Peso: {pokemon.weight / 10} kg</p>
+      <p>Tipos: {pokemon.types.map((t) => t.type.name).join(", ")}</p>
+    </>
+  );
+}
+
+export default function DetallePokemonPage({ params }) {
+  const { nombre } = params;
+
+  return (
+    <div>
+      <Link href="/">Volver al listado</Link>
+      <Suspense fallback={<p>Cargando detalles del Pokémon...</p>}>
+        {/* @ts-expect-error Async Server Component */}
+        <PokemonDetails nombre={nombre} />
+      </Suspense>
+    </div>
+  );
+}
+
+export async function generateMetadata({ params }) {
+  // Esta función también se ejecuta en el Edge
+  return {
+    title: `Detalles de ${params.nombre}`,
+  };
+}
+```
+
+### 8. Edge Rendering
+
+**Tecnologías**: Next.js App Router (Edge Runtime)
+
+**Implementación principal**: Muy similar a RSC, pero especificando `runtime = 'edge'`.
+
+**Página Principal (Server Component - Edge)**:
+
+```jsx
+// apps/edge/app/page.jsx
+import { PokemonSearch } from "./pokemon-search";
+
+export const runtime = "edge"; // Especificar Edge Runtime
+
+async function fetchPokemonList() {
+  const response = await fetch(
+    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0",
+    { cache: "no-store" } // Fetch en cada request, ejecutado en el Edge
+  );
+  if (!response.ok) throw new Error("Failed to fetch Pokemon list");
+  const data = await response.json();
+  return data.results;
+}
+
+export default async function Page() {
+  const pokemonList = await fetchPokemonList();
+
+  return (
+    <div>
+      <h1>Edge Rendering</h1>
+      <p>El listado se renderiza en el Edge. El buscador es cliente.</p>
+      <PokemonSearch initialPokemon={pokemonList} />
+    </div>
+  );
+}
+```
+
+**Componente de Búsqueda (Client Component - Igual que RSC/Streaming)**:
+
+```jsx
+// apps/edge/app/pokemon-search.jsx
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+
+export function PokemonSearch({ initialPokemon }) {
+  const [busqueda, setBusqueda] = useState("");
+
+  const pokemonFiltrados = initialPokemon.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
+  );
+
+  return (
+    <>
+      <input
+        type="text"
+        value={busqueda}
+        onChange={(e) => setBusqueda(e.target.value)}
+        placeholder="Buscar Pokémon..."
+      />
+      <ul>
+        {pokemonFiltrados.map((pokemon) => {
+          const pokemonId =
+            pokemon.url.split("/")[pokemon.url.split("/").length - 2];
+          return (
+            <li key={pokemon.name}>
+              <Link href={`/detalles/${pokemon.name}`}>
+                #{pokemonId} - {pokemon.name}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
+}
+```
+
+**Página de Detalles (Server Component - Edge - Nuevo)**:
+
+```jsx
+// apps/edge/app/detalles/[nombre]/page.jsx
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+export const runtime = "edge"; // Especificar Edge Runtime
+
+async function fetchPokemonDetail(nombre) {
+  try {
+    // Fetch se ejecuta en el Edge
+    const response = await fetch(
+      `https://pokeapi.co/api/v2/pokemon/${nombre}`,
+      {
+        cache: "no-store",
+      }
+    );
+    if (!response.ok) {
+      return null;
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Fetch error (Edge):", error);
+    return null;
+  }
+}
+
+export default async function DetallePokemonPage({ params }) {
+  const { nombre } = params;
+  const pokemon = await fetchPokemonDetail(nombre);
+
+  if (!pokemon) {
+    notFound();
+  }
+
+  return (
+    <div>
+      <Link href="/">Volver al listado</Link>
+      <h1>Detalles (Edge): {pokemon.name}</h1>
+      {/* APIs como <Image> de next/image pueden no ser compatibles con Edge */}
+      {/* Usamos <img> normal */}
+      <img
+        src={pokemon.sprites.front_default}
+        alt={pokemon.name}
+        width={96}
+        height={96}
+      />
+      <p>ID: {pokemon.id}</p>
+      <p>Altura: {pokemon.height / 10} m</p>
+      <p>Peso: {pokemon.weight / 10} kg</p>
+      <p>Tipos: {pokemon.types.map((t) => t.type.name).join(", ")}</p>
+    </div>
+  );
+}
+
+export async function generateMetadata({ params }) {
+  // Esta función también se ejecuta en el Edge
+  return {
+    title: `Detalles (Edge) de ${params.nombre}`,
+  };
 }
 ```
 
