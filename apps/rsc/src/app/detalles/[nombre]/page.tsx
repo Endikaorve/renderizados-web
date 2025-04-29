@@ -25,7 +25,7 @@ interface PokemonDetail {
 }
 
 interface PageProps {
-  params: Promise<{ nombre: string }> & { nombre: string };
+  params: Promise<{ nombre: string }>;
 }
 
 async function fetchPokemonDetail(
@@ -53,7 +53,7 @@ async function fetchPokemonDetail(
 }
 
 export default async function DetallePokemonPage({ params }: PageProps) {
-  const { nombre } = params;
+  const { nombre } = await params;
   const pokemon = await fetchPokemonDetail(nombre);
 
   // Si fetchPokemonDetail devolvió null (no encontrado o error),
@@ -88,7 +88,9 @@ export default async function DetallePokemonPage({ params }: PageProps) {
 }
 
 export async function generateMetadata({ params }: PageProps) {
+  const { nombre } = await params;
+
   return {
-    title: `Detalles de ${params.nombre}`,
+    title: `Detalles de ${nombre}`,
   };
 }
