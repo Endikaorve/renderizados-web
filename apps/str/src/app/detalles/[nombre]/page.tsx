@@ -26,7 +26,7 @@ interface PokemonDetail {
 }
 
 interface PageProps {
-  params: { nombre: string };
+  params: Promise<{ nombre: string }>;
 }
 
 // Componente para el esqueleto de carga de los datos del Pokémon
@@ -89,7 +89,7 @@ async function fetchPokemonDetail(
 }
 
 export default async function DetallePokemonPage({ params }: PageProps) {
-  const { nombre } = params;
+  const { nombre } = await params;
 
   return (
     <div className="container">
@@ -108,7 +108,7 @@ export default async function DetallePokemonPage({ params }: PageProps) {
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const { nombre } = params;
+  const { nombre } = await params;
 
   return {
     title: `Detalles de ${nombre} - SSR`,
