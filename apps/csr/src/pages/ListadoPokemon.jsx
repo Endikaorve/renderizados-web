@@ -14,6 +14,8 @@ function ListadoPokemon() {
   } = useQuery({
     queryKey: ["pokemonList"],
     queryFn: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       const response = await fetch(
         "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
       );

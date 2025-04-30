@@ -15,6 +15,8 @@ interface PokemonApiResponse {
 
 // Función asíncrona para obtener los datos
 async function fetchPokemonList(): Promise<PokemonListItem[]> {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
   const response = await fetch(
     "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0",
     {

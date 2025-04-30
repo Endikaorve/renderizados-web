@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ListadoPokemon from "./components/ListadoPokemon";
+import ListadoPokemon from "./pages/ListadoPokemon";
 import DetallePokemon from "./pages/DetallePokemon";
 import "./index.css";
 
