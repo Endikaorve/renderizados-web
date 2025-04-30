@@ -18,9 +18,7 @@ async function fetchPokemonList(): Promise<PokemonListItem[]> {
   const response = await fetch(
     "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0",
     {
-      // cache: "no-store", // Descomentar para forzar fetch en cada request (SSR-like)
-      // next: { revalidate: 3600 } // Opcional: Revalidar cada hora (ISR-like)
-      cache: "force-cache", // Comportamiento por defecto (SSG-like)
+      cache: "no-store",
     }
   );
 
