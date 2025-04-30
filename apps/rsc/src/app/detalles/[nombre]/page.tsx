@@ -35,8 +35,7 @@ async function fetchPokemonDetail(
     const response = await fetch(
       `https://pokeapi.co/api/v2/pokemon/${nombre}`,
       {
-        // cache: 'force-cache', // Podemos cachear los detalles si queremos (comportamiento SSG/ISR)
-        cache: "no-store", // O fetchearlos siempre (comportamiento SSR)
+        cache: "no-store",
       }
     );
     if (!response.ok) {
