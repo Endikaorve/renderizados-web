@@ -1,6 +1,0 @@
-{
-  "buildCommand": "yarn build",
-  "installCommand": "yarn install",
-  "outputDirectory": "apps/$(echo $VERCEL_PROJECT_NAME | sed 's/dxp-//')",
-  "ignoreCommand": "sh -c \"git diff --quiet HEAD^ HEAD -- apps/$(echo $VERCEL_PROJECT_NAME | sed 's/dxp-//') || exit 0\""
-}
