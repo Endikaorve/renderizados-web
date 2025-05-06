@@ -117,3 +117,23 @@ export async function generateMetadata({ params }: PageProps) {
     title: `Detalles de ${nombre} - PPR`,
   };
 }
+
+export async function generateStaticParams() {
+  try {
+    const response = await fetch(
+      "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+    );
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const data = await response.json();
+    return data.results.map((pokemon: { name: string }) => ({
+      nombre: pokemon.name,
+    }));
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
+}
