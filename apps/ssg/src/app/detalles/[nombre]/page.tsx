@@ -37,7 +37,6 @@ export default async function Page({
 
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`, {
       cache: "force-cache",
-      next: { revalidate: 60 },
     });
 
     if (!res.ok) {
