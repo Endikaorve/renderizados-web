@@ -20,7 +20,13 @@
     "dev:islands": "yarn workspace islands dev",
     "dev:streaming": "yarn workspace streaming dev",
     "dev:edge": "yarn workspace edge dev",
-    "build": "yarn workspaces run build"
+    "build": "yarn workspaces run build",
+    "build:csr": "yarn workspace csr build",
+    "build:ssr": "yarn workspace ssr build",
+    "build:ssg": "yarn workspace ssg build",
+    "build:ppr": "yarn workspace ppr build",
+    "build:str": "yarn workspace str build",
+    "check-changes": "bash scripts/check-changes.sh"
   },
   "dependencies": {
     "concurrently": "^9.1.2",
