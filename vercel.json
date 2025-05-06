@@ -1,8 +1,6 @@
 {
-  "workspaceCommand": "yarn install",
-  "installCommand": "yarn install",
-  "monorepo": true,
   "buildCommand": "yarn build",
-  "ignoreCommand": "sh -c \"git diff --quiet HEAD^ HEAD -- apps/$(echo $VERCEL_PROJECT_NAME | sed 's/dxp-//') || exit 0\"",
-  "outputDirectory": "apps/$(echo $VERCEL_PROJECT_NAME | sed 's/dxp-//')"
+  "installCommand": "yarn install",
+  "outputDirectory": "apps/$(echo $VERCEL_PROJECT_NAME | sed 's/dxp-//')",
+  "ignoreCommand": "sh -c \"git diff --quiet HEAD^ HEAD -- apps/$(echo $VERCEL_PROJECT_NAME | sed 's/dxp-//') || exit 0\""
 }
