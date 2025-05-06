@@ -6,6 +6,8 @@ export async function generateStaticParams() {
 }
 
 async function getData() {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
   const res = await fetch(
     "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0",
     { cache: "force-cache" } // force-cache es el equivalente al comportamiento de SSG en App Router

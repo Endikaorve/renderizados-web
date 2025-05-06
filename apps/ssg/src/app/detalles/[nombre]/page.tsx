@@ -33,6 +33,8 @@ export default async function Page({
   let pokemon;
 
   try {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`, {
       cache: "force-cache",
       next: { revalidate: 60 },
