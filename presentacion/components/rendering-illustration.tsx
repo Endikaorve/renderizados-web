@@ -418,32 +418,24 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
           <div className="flex flex-col h-full justify-between">
             <div className="flex justify-between items-center">
               <div className="text-center">
-                <Server className="h-10 w-10 text-blue-500 mx-auto" />
+                <motion.div
+                  animate={{
+                    scale: [1, 1.1, 1],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Number.POSITIVE_INFINITY,
+                    repeatType: 'loop',
+                  }}
+                >
+                  <Server className="h-10 w-10 text-blue-500 mx-auto" />
+                </motion.div>
                 <span className="text-xs mt-1 block text-slate-600 dark:text-slate-400">
                   Servidor
                 </span>
               </div>
 
-              <div className="flex-1 px-2">
-                <motion.div
-                  className="h-1 bg-blue-400 dark:bg-blue-500 rounded-full"
-                  initial={{ width: 0 }}
-                  animate={isHovered ? { width: '100%' } : { width: 0 }}
-                  transition={{ duration: 0.8 }}
-                />
-                <motion.div
-                  className="h-1 bg-purple-400 dark:bg-purple-500 rounded-full mt-1"
-                  initial={{ width: 0 }}
-                  animate={isHovered ? { width: '100%' } : { width: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                />
-                <motion.div
-                  className="h-1 bg-indigo-400 dark:bg-indigo-500 rounded-full mt-1"
-                  initial={{ width: 0 }}
-                  animate={isHovered ? { width: '100%' } : { width: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                />
-              </div>
+              <ArrowRight className="h-6 w-6 text-slate-500" />
 
               <div className="text-center">
                 <Monitor className="h-10 w-10 text-slate-500 mx-auto" />
