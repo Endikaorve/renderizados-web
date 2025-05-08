@@ -249,7 +249,7 @@ export function RenderingSection({
               className="w-full mb-10 overflow-hidden rounded-lg shadow-lg"
             >
               <Image
-                src={`/placeholder.svg?height=400&width=1200&text=Diagrama+Técnico+${id.toUpperCase()}`}
+                src={`/diagramas/${id}.png`}
                 alt={`Diagrama técnico de ${title}`}
                 width={1200}
                 height={400}

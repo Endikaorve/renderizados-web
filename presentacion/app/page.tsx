@@ -135,7 +135,7 @@ export default function Home() {
         />
 
         <RenderingSection
-          id="streaming"
+          id="str"
           title="SSR con Streaming"
           description={[
             'Evolución del SSR tradicional que permite enviar partes del HTML progresivamente.',
