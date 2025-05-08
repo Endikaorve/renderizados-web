@@ -636,25 +636,26 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
                   <motion.div
                     animate={{
                       backgroundColor: ['#c7d2fe', '#818cf8', '#c7d2fe'],
+                      width: ['72%', '68%', '70%', '72%'],
                     }}
                     transition={{
-                      duration: 3,
+                      duration: 4,
                       repeat: Number.POSITIVE_INFINITY,
                       delay: 0.5,
                     }}
-                    className="h-2 bg-indigo-200 dark:bg-indigo-700 rounded w-3/4"
+                    className="h-2 bg-indigo-200 dark:bg-indigo-700 rounded"
                   ></motion.div>
                   <motion.div
                     animate={{
                       backgroundColor: ['#ddd6fe', '#a78bfa', '#ddd6fe'],
-                      x: [0, 2, 0],
+                      width: ['28%', '32%', '30%', '28%'],
                     }}
                     transition={{
-                      duration: 3,
+                      duration: 4,
                       repeat: Number.POSITIVE_INFINITY,
-                      delay: 1,
+                      delay: 0.5,
                     }}
-                    className="h-2 bg-violet-200 dark:bg-violet-700 rounded w-1/4"
+                    className="h-2 bg-violet-200 dark:bg-violet-700 rounded"
                   ></motion.div>
                 </div>
                 <motion.div
