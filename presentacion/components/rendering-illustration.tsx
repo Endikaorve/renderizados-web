@@ -22,10 +22,7 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
   switch (type) {
     case 'client-side':
       return (
-        <motion.div
-          className="relative w-full max-w-md h-64 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg"
-          transition={{ duration: 0.3 }}
-        >
+        <div className="relative w-full max-w-md h-64 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg">
           <div className="flex flex-col h-full justify-between">
             <div className="flex justify-between">
               <Server className="h-10 w-10 text-slate-400" />
@@ -79,14 +76,13 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               </span>
             </div>
           </div>
-        </motion.div>
+        </div>
       );
 
     case 'static-generation':
       return (
-        <motion.div
+        <div
           className="relative w-full max-w-md h-64 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg"
-          transition={{ duration: 0.3 }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -163,15 +159,12 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               </span>
             </div>
           </div>
-        </motion.div>
+        </div>
       );
 
     case 'incremental-static':
       return (
-        <motion.div
-          className="relative w-full max-w-md h-64 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg"
-          transition={{ duration: 0.3 }}
-        >
+        <div className="relative w-full max-w-md h-64 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg">
           <div className="flex flex-col h-full justify-between">
             <div className="flex justify-between items-center">
               <div className="text-center">
@@ -285,14 +278,13 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               </span>
             </div>
           </div>
-        </motion.div>
+        </div>
       );
 
     case 'server-side':
       return (
-        <motion.div
+        <div
           className="relative w-full max-w-md h-64 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg"
-          transition={{ duration: 0.3 }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -373,14 +365,13 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               </span>
             </div>
           </div>
-        </motion.div>
+        </div>
       );
 
     case 'streaming':
       return (
-        <motion.div
+        <div
           className="relative w-full max-w-md h-64 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg"
-          transition={{ duration: 0.3 }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -452,14 +443,13 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               </span>
             </div>
           </div>
-        </motion.div>
+        </div>
       );
 
     case 'partial-prerendering':
       return (
-        <motion.div
+        <div
           className="relative w-full max-w-md h-64 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg"
-          transition={{ duration: 0.3 }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -542,15 +532,12 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               </span>
             </div>
           </div>
-        </motion.div>
+        </div>
       );
 
     case 'server-components':
       return (
-        <motion.div
-          className="relative w-full max-w-md h-64 bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg"
-          transition={{ duration: 0.3 }}
-        >
+        <div className="relative w-full max-w-md h-64 bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg">
           <div className="flex flex-col h-full justify-between">
             <div className="flex justify-between items-center">
               <div className="text-center">
@@ -656,7 +643,7 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               </span>
             </div>
           </div>
-        </motion.div>
+        </div>
       );
 
     default:
