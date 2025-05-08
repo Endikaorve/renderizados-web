@@ -15,11 +15,11 @@ export function StreamingModal({ isOpen, onClose }: StreamingModalProps) {
       title="Streaming en Renderizado Web"
     >
       <p className="text-slate-700 dark:text-slate-300">
-        El streaming en el contexto del renderizado web es una técnica que
-        permite enviar partes de una página HTML al navegador de forma
-        progresiva, en lugar de esperar a que todo el contenido esté listo.
-        Funciona de manera similar al streaming de video, donde puedes comenzar
-        a ver el contenido antes de que se descargue por completo.
+        El streaming es una técnica que permite enviar partes de una página HTML
+        al navegador de forma progresiva, en lugar de esperar a que todo el
+        contenido esté listo. Funciona de manera similar al streaming de video,
+        donde puedes comenzar a ver el contenido antes de que se descargue por
+        completo.
       </p>
 
       <h4 className="text-lg font-semibold text-slate-900 dark:text-white mt-6 mb-3">
@@ -29,7 +29,7 @@ export function StreamingModal({ isOpen, onClose }: StreamingModalProps) {
       <ul className="space-y-2">
         <li className="text-slate-700 dark:text-slate-300">
           El servidor comienza a enviar HTML tan pronto como las primeras partes
-          están listas
+          están listas. Se deja la conexión abierta
         </li>
         <li className="text-slate-700 dark:text-slate-300">
           El navegador puede comenzar a procesar y mostrar este HTML inicial
@@ -37,7 +37,7 @@ export function StreamingModal({ isOpen, onClose }: StreamingModalProps) {
         </li>
         <li className="text-slate-700 dark:text-slate-300">
           Los componentes que dependen de datos más lentos se renderizan y
-          envían cuando están disponibles
+          envían cuando están disponibles a través de la conexión abierta
         </li>
         <li className="text-slate-700 dark:text-slate-300">
           El resultado es una experiencia de carga progresiva y perceptivamente
