@@ -320,6 +320,8 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
           }}
           transition={{ duration: 0.3 }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           <div className="flex flex-col h-full justify-between">
             <div className="flex justify-between items-center">
@@ -364,33 +366,32 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               <div className="text-xs text-slate-500 dark:text-slate-300 mb-2">
                 HTML generado por request
               </div>
-              <motion.div
-                className="space-y-1"
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: 1,
-                }}
-                transition={{ duration: 0.5 }}
-              >
+              <div className="space-y-1">
                 <motion.div
-                  initial={{ width: 0, x: -20, opacity: 0 }}
-                  animate={{ width: '100%', x: 0, opacity: 1 }}
-                  transition={{ duration: 0.7, delay: 0.2 }}
                   className="h-2 bg-purple-200 dark:bg-purple-700 rounded"
+                  initial={{ width: 0 }}
+                  animate={
+                    isHovered ? { width: ['0%', '100%'] } : { width: '100%' }
+                  }
+                  transition={{ duration: 0.8 }}
                 />
                 <motion.div
-                  initial={{ width: 0, x: -20, opacity: 0 }}
-                  animate={{ width: '75%', x: 0, opacity: 1 }}
-                  transition={{ duration: 0.7, delay: 0.4 }}
                   className="h-2 bg-purple-200 dark:bg-purple-700 rounded"
+                  initial={{ width: 0 }}
+                  animate={
+                    isHovered ? { width: ['0%', '75%'] } : { width: '75%' }
+                  }
+                  transition={{ duration: 0.6 }}
                 />
                 <motion.div
-                  initial={{ width: 0, x: -20, opacity: 0 }}
-                  animate={{ width: '50%', x: 0, opacity: 1 }}
-                  transition={{ duration: 0.7, delay: 0.6 }}
                   className="h-2 bg-purple-200 dark:bg-purple-700 rounded"
+                  initial={{ width: 0 }}
+                  animate={
+                    isHovered ? { width: ['0%', '50%'] } : { width: '50%' }
+                  }
+                  transition={{ duration: 0.6 }}
                 />
-              </motion.div>
+              </div>
             </div>
 
             <div className="text-center mt-4">
