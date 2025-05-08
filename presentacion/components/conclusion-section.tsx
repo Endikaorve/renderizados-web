@@ -19,11 +19,8 @@ export function ConclusionSection() {
   ];
 
   const debateTopics = [
-    '¿Es el Server-Side Rendering realmente necesario con las mejoras en los motores de JavaScript modernos?',
-    '¿Compensa la complejidad de las arquitecturas híbridas frente a enfoques más simples?',
-    '¿Justifica el beneficio de rendimiento de RSC la curva de aprendizaje asociada?',
-    '¿El PPR resolverá realmente los problemas de UX que promete o es una solución transitoria?',
-    '¿Deberían las aplicaciones empresariales adoptar SSG a pesar de sus limitaciones en datos dinámicos?',
+    '¿Es toda esta complejidad realmente necesaria?',
+    'Hiperoptimización vs personalización',
   ];
 
   return (
@@ -78,7 +75,7 @@ export function ConclusionSection() {
             Debatamos
           </h3>
           <p className="mt-3 text-lg text-slate-700 dark:text-slate-300">
-            Preguntas para reflexionar sobre el futuro del renderizado web
+            Si no, ¿dónde está la gracia?
           </p>
         </motion.div>
 
