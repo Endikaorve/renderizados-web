@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Server,
@@ -16,7 +16,6 @@ interface RenderingIllustrationProps {
 }
 
 export function RenderingIllustration({ type }: RenderingIllustrationProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
   // Render different illustrations based on the type
@@ -482,15 +481,7 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
                 </span>
               </div>
 
-              <div className="flex flex-col items-center">
-                <div className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900/50 rounded text-xs text-indigo-700 dark:text-indigo-300">
-                  RSC
-                </div>
-                <ArrowRight className="h-4 w-4 text-slate-500 my-1" />
-                <div className="px-2 py-1 bg-violet-100 dark:bg-violet-900/50 rounded text-xs text-violet-700 dark:text-violet-300">
-                  HTML + JSON
-                </div>
-              </div>
+              <ArrowRight className="h-6 w-6 text-slate-500 self-center" />
 
               <div className="text-center">
                 <Monitor className="h-10 w-10 text-slate-500 mx-auto" />
