@@ -18,6 +18,8 @@ export function RSCSection() {
     'Su código y dependencias no aumentan el tamaño del bundle JavaScript enviado al navegador.',
     "Los Client Components, marcados con la directiva 'use client', se renderizan inicialmente en el servidor pero también se envían al cliente como JavaScript.",
     'Esta arquitectura permite una composición flexible donde los Server Components pueden renderizar Client Components y viceversa.',
+    'Se integra perfectamente con React Suspense, permitiendo definir estados de carga y estrategias de fallback dentro de la jerarquía de componentes.',
+    'RSC no reemplaza estrategias como SSR o SSG, sino que se puede combinar con ellas para obtener mejores resultados.',
     'Proporciona un modelo mental claro para los desarrolladores sobre dónde se ejecuta cada parte de la aplicación.',
   ];
 

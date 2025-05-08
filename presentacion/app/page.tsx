@@ -25,6 +25,7 @@ export default function Home() {
             'Una vez cargada la aplicación JavaScript, la navegación entre páginas no requiere nuevas solicitudes de HTML al servidor.',
             'La aplicación maneja las transiciones de vista, solicitando solo los datos necesarios a través de APIs.',
             'Este enfoque crea una experiencia de usuario más fluida después de la carga inicial, similar a una aplicación nativa.',
+            'Librerías modernas como React Query, SWR o TanStack Query han mejorado significativamente el rendimiento y la experiencia en aplicaciones CSR mediante estrategias de caché, revalidación automática y gestión optimizada del estado.',
           ]}
           pros={[
             'Baja carga en el servidor, ya que solo entrega archivos estáticos',
@@ -169,7 +170,7 @@ export default function Home() {
           id="ppr"
           title="Partial Pre-rendering (PPR)"
           description={[
-            'Estrategia innovadora introducida por Next.js que combina renderizado estático y dinámico en una misma página.',
+            'Estrategia innovadora introducida en Next.js que combina renderizado estático y dinámico en una misma página.',
             "Permite pre-renderizar estáticamente partes de una página durante el build, dejando 'agujeros' para contenido dinámico.",
             'El shell de la página (layouts, navegación, elementos comunes) se pre-renderiza durante el build.',
             'Estos elementos estáticos se entregan inmediatamente al usuario para una carga inicial rápida.',

@@ -10,10 +10,12 @@ export function ConclusionSection() {
 
   const conclusions = [
     'Cada estrategia tiene un uso ideal según el tipo de aplicación y contenido.',
-    'El enfoque híbrido es la norma: CSR + SSR + SSG coexistiendo en la misma aplicación.',
-    'React evoluciona hacia optimizaciones de carga progresiva y server-first.',
-    'Es importante evaluar siempre: tipo de contenido, SEO, rendimiento y costes.',
-    'Las nuevas estrategias como PPR y RSC ofrecen lo mejor de ambos mundos.',
+    'Para sitios con contenido mayormente estático (blogs, documentación), SSG es la opción óptima.',
+    'Para aplicaciones con datos personalizados y actualizaciones frecuentes, SSR con streaming ofrece el mejor equilibrio.',
+    'Las aplicaciones tipo dashboard o admin pueden beneficiarse de CSR con librerías de gestión de estado modernas.',
+    'PPR es ideal para sitios con una combinación de contenido estático y dinámico, como tiendas online o plataformas de contenido.',
+    'El enfoque híbrido es la norma: diferentes estrategias coexistiendo en la misma aplicación según la página o componente.',
+    'React Server Components representa el futuro para optimizaciones de tamaño de bundle y separación de responsabilidades.',
   ];
 
   return (
