@@ -128,7 +128,7 @@ export function RSCSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-lg text-slate-700 dark:text-slate-300 mb-8 max-w-3xl w-full"
+            className="text-lg text-slate-700 dark:text-slate-300 mb-8 max-w-4xl w-full"
           >
             <ul className="space-y-3 list-disc pl-6">
               {description.map((point, index) => (
@@ -162,7 +162,7 @@ export function RSCSection() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               transition={{ duration: 0.5 }}
-              className="grid md:grid-cols-2 gap-6 w-full max-w-3xl"
+              className="grid md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto"
             >
               <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
                 <h3 className="font-semibold text-green-700 dark:text-green-400 mb-3 flex items-center">
