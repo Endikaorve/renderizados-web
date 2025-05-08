@@ -71,35 +71,6 @@ export function ComparisonTable() {
       },
     },
     {
-      name: 'Hidratación',
-      values: {
-        csr: {
-          icon: <Check className="h-5 w-5 text-green-500" />,
-          note: 'No necesaria',
-        },
-        ssg: {
-          icon: <X className="h-5 w-5 text-red-500" />,
-          note: 'Completa y bloqueante',
-        },
-        isr: {
-          icon: <X className="h-5 w-5 text-red-500" />,
-          note: 'Completa y bloqueante',
-        },
-        ssr: {
-          icon: <X className="h-5 w-5 text-red-500" />,
-          note: 'Completa y bloqueante',
-        },
-        streaming: {
-          icon: <Minus className="h-5 w-5 text-amber-500" />,
-          note: 'Progresiva pero completa',
-        },
-        ppr: {
-          icon: <Check className="h-5 w-5 text-green-500" />,
-          note: 'Selectiva y parcial',
-        },
-      },
-    },
-    {
       name: 'Carga en servidor',
       values: {
         csr: {
@@ -175,6 +146,35 @@ export function ComparisonTable() {
           note: 'Alta',
         },
         ppr: { icon: <X className="h-5 w-5 text-red-500" />, note: 'Alta' },
+      },
+    },
+    {
+      name: 'Hidratación',
+      values: {
+        csr: {
+          icon: <Check className="h-5 w-5 text-green-500" />,
+          note: 'No aplica',
+        },
+        ssg: {
+          icon: <Minus className="h-5 w-5 text-amber-500" />,
+          note: 'Selectiva con RSC',
+        },
+        isr: {
+          icon: <Minus className="h-5 w-5 text-amber-500" />,
+          note: 'Selectiva con RSC',
+        },
+        ssr: {
+          icon: <Minus className="h-5 w-5 text-amber-500" />,
+          note: 'Selectiva con RSC',
+        },
+        streaming: {
+          icon: <Check className="h-5 w-5 text-green-500" />,
+          note: 'Progresiva y selectiva con RSC',
+        },
+        ppr: {
+          icon: <Check className="h-5 w-5 text-green-500" />,
+          note: 'Óptima con RSC (Shell + islas dinámicas)',
+        },
       },
     },
   ] as const;
