@@ -36,7 +36,7 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               </div>
               <div className="space-y-1">
                 <motion.div
-                  className="h-2 bg-slate-200 dark:bg-slate-600 rounded w-full"
+                  className="h-2 bg-slate-200 dark:bg-slate-500 rounded w-full"
                   initial={{ width: '30%' }}
                   animate={{ width: '100%' }}
                   transition={{
@@ -46,7 +46,7 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
                   }}
                 />
                 <motion.div
-                  className="h-2 bg-slate-200 dark:bg-slate-600 rounded w-3/4"
+                  className="h-2 bg-slate-200 dark:bg-slate-500 rounded w-3/4"
                   initial={{ width: '20%' }}
                   animate={{ width: '75%' }}
                   transition={{
@@ -57,7 +57,7 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
                   }}
                 />
                 <motion.div
-                  className="h-2 bg-slate-200 dark:bg-slate-600 rounded w-1/2"
+                  className="h-2 bg-slate-200 dark:bg-slate-500 rounded w-1/2"
                   initial={{ width: '10%' }}
                   animate={{ width: '50%' }}
                   transition={{
