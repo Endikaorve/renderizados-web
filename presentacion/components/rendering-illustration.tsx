@@ -164,7 +164,11 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
 
     case 'incremental-static':
       return (
-        <div className="relative w-full max-w-md h-64 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg">
+        <div
+          className="relative w-full max-w-md h-64 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <div className="flex flex-col h-full justify-between">
             <div className="flex justify-between items-center">
               <div className="text-center">
@@ -186,20 +190,17 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               </div>
 
               <div className="flex flex-col items-center">
-                <Clock className="h-6 w-6 text-slate-500" />
                 <motion.div
                   animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [1, 0.8, 1],
+                    rotate: [-15, 15, -15],
                   }}
                   transition={{
                     duration: 2,
                     repeat: Number.POSITIVE_INFINITY,
                     repeatType: 'loop',
                   }}
-                  className="text-xs text-slate-500 dark:text-slate-400 mt-1"
                 >
-                  Revalidación
+                  <Clock className="h-6 w-6 text-slate-500" />
                 </motion.div>
               </div>
 
@@ -239,34 +240,87 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               <div className="space-y-1 mt-2">
                 <motion.div
                   className="h-2 bg-cyan-200 dark:bg-cyan-700 rounded w-full"
-                  animate={{
-                    backgroundColor: ['#bae6fd', '#0ea5e9', '#bae6fd'],
-                    scale: [1, 1.02, 1],
+                  initial={{ opacity: 0 }}
+                  animate={
+                    isHovered
+                      ? {
+                          opacity: [0, 1],
+                          backgroundColor: ['#bae6fd', '#0ea5e9', '#bae6fd'],
+                          scale: [1, 1.02, 1],
+                        }
+                      : {
+                          opacity: 1,
+                          backgroundColor: ['#bae6fd', '#0ea5e9', '#bae6fd'],
+                          scale: [1, 1.02, 1],
+                        }
+                  }
+                  transition={{
+                    opacity: { duration: 0.4 },
+                    backgroundColor: {
+                      duration: 3,
+                      repeat: Number.POSITIVE_INFINITY,
+                    },
+                    scale: { duration: 3, repeat: Number.POSITIVE_INFINITY },
                   }}
-                  transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
                 ></motion.div>
                 <motion.div
                   className="h-2 bg-cyan-200 dark:bg-cyan-700 rounded w-3/4"
-                  animate={{
-                    backgroundColor: ['#bae6fd', '#0ea5e9', '#bae6fd'],
-                    scale: [1, 1.02, 1],
-                  }}
+                  initial={{ opacity: 0 }}
+                  animate={
+                    isHovered
+                      ? {
+                          opacity: [0, 1],
+                          backgroundColor: ['#bae6fd', '#0ea5e9', '#bae6fd'],
+                          scale: [1, 1.02, 1],
+                        }
+                      : {
+                          opacity: 1,
+                          backgroundColor: ['#bae6fd', '#0ea5e9', '#bae6fd'],
+                          scale: [1, 1.02, 1],
+                        }
+                  }
                   transition={{
-                    duration: 3,
-                    repeat: Number.POSITIVE_INFINITY,
-                    delay: 0.5,
+                    opacity: { duration: 0.4, delay: 0.2 },
+                    backgroundColor: {
+                      duration: 3,
+                      repeat: Number.POSITIVE_INFINITY,
+                      delay: 0.5,
+                    },
+                    scale: {
+                      duration: 3,
+                      repeat: Number.POSITIVE_INFINITY,
+                      delay: 0.5,
+                    },
                   }}
                 ></motion.div>
                 <motion.div
                   className="h-2 bg-cyan-200 dark:bg-cyan-700 rounded w-1/2"
-                  animate={{
-                    backgroundColor: ['#bae6fd', '#0ea5e9', '#bae6fd'],
-                    scale: [1, 1.02, 1],
-                  }}
+                  initial={{ opacity: 0 }}
+                  animate={
+                    isHovered
+                      ? {
+                          opacity: [0, 1],
+                          backgroundColor: ['#bae6fd', '#0ea5e9', '#bae6fd'],
+                          scale: [1, 1.02, 1],
+                        }
+                      : {
+                          opacity: 1,
+                          backgroundColor: ['#bae6fd', '#0ea5e9', '#bae6fd'],
+                          scale: [1, 1.02, 1],
+                        }
+                  }
                   transition={{
-                    duration: 3,
-                    repeat: Number.POSITIVE_INFINITY,
-                    delay: 1,
+                    opacity: { duration: 0.4, delay: 0.4 },
+                    backgroundColor: {
+                      duration: 3,
+                      repeat: Number.POSITIVE_INFINITY,
+                      delay: 1,
+                    },
+                    scale: {
+                      duration: 3,
+                      repeat: Number.POSITIVE_INFINITY,
+                      delay: 1,
+                    },
                   }}
                 ></motion.div>
               </div>
