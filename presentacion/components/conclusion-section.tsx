@@ -58,24 +58,6 @@ export function ConclusionSection() {
               </motion.li>
             ))}
           </ul>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-            className="mt-12 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 rounded-xl shadow-md"
-          >
-            <h3 className="text-xl font-semibold mb-4 text-slate-900 dark:text-white">
-              Mensaje final
-            </h3>
-            <p className="text-slate-700 dark:text-slate-300">
-              El futuro del renderizado web se dirige hacia soluciones híbridas
-              y adaptativas. La elección de la estrategia correcta dependerá
-              siempre del caso de uso específico, pero las nuevas tecnologías
-              nos permiten combinar lo mejor de cada enfoque para crear
-              experiencias web rápidas, interactivas y accesibles.
-            </p>
-          </motion.div>
         </div>
       </div>
     </section>
