@@ -182,7 +182,14 @@ export function RenderingSection({
             transition={{ duration: 0.5 }}
             className="text-3xl font-bold mb-8 text-slate-900 dark:text-white text-center"
           >
-            {title}
+            <a
+              href={`https://dxp-${id}.vercel.app/`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              {title}
+            </a>
           </motion.h2>
 
           {/* Ilustración arriba */}
