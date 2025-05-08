@@ -62,7 +62,9 @@ export function RSCSection() {
           </motion.h2>
 
           {/* Ilustración Reemplazada */}
-          <RenderingIllustration type="server-components" />
+          <div className="mb-10">
+            <RenderingIllustration type="server-components" />
+          </div>
 
           {/* Descripción en formato de puntos */}
           <motion.div
