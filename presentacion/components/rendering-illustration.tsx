@@ -451,19 +451,28 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               </div>
               <div className="space-y-1">
                 <motion.div
-                  className="h-2 bg-blue-200 dark:bg-blue-700 rounded w-full"
-                  animate={isHovered ? { opacity: [0, 1] } : { opacity: 1 }}
-                  transition={{ duration: 0.3 }}
+                  className="h-2 bg-blue-200 dark:bg-blue-700 rounded"
+                  initial={{ width: 0 }}
+                  animate={
+                    isHovered ? { width: ['0%', '100%'] } : { width: '100%' }
+                  }
+                  transition={{ duration: 0.6 }}
                 />
                 <motion.div
-                  className="h-2 bg-purple-200 dark:bg-purple-700 rounded w-3/4"
-                  animate={isHovered ? { opacity: [0, 1] } : { opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.2 }}
+                  className="h-2 bg-purple-200 dark:bg-purple-700 rounded"
+                  initial={{ width: 0 }}
+                  animate={
+                    isHovered ? { width: ['0%', '75%'] } : { width: '75%' }
+                  }
+                  transition={{ duration: 0.6, delay: 0.4 }}
                 />
                 <motion.div
-                  className="h-2 bg-indigo-200 dark:bg-indigo-700 rounded w-1/2"
-                  animate={isHovered ? { opacity: [0, 1] } : { opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.4 }}
+                  className="h-2 bg-indigo-200 dark:bg-indigo-700 rounded"
+                  initial={{ width: 0 }}
+                  animate={
+                    isHovered ? { width: ['0%', '50%'] } : { width: '50%' }
+                  }
+                  transition={{ duration: 0.6, delay: 0.4 }}
                 />
               </div>
             </div>
