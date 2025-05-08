@@ -39,7 +39,7 @@ export function ConclusionSection() {
           </p>
         </motion.div>
 
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <ul className="space-y-6">
             {conclusions.map((conclusion, index) => (
               <motion.li

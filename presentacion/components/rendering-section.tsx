@@ -283,42 +283,46 @@ export function RenderingSection({
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               transition={{ duration: 0.5 }}
-              className="grid md:grid-cols-2 gap-6 w-full max-w-3xl"
+              className="w-full mb-10 max-w-4xl mx-auto"
             >
-              <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-                <h3 className="font-semibold text-green-700 dark:text-green-400 mb-3 flex items-center">
-                  <Check className="mr-2 h-5 w-5" /> Ventajas
-                </h3>
-                <ul className="space-y-2">
-                  {pros.map((pro, index) => (
-                    <li
-                      key={index}
-                      className="text-slate-700 dark:text-slate-300 flex"
-                    >
-                      <span className="mr-2 text-green-500 flex-shrink-0">
-                        •
-                      </span>
-                      <span>{processText(pro)}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <div className="grid md:grid-cols-2 gap-8 w-full">
+                <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                  <h3 className="font-semibold text-green-700 dark:text-green-400 mb-3 flex items-center">
+                    <Check className="mr-2 h-5 w-5" /> Ventajas
+                  </h3>
+                  <ul className="space-y-2">
+                    {pros.map((pro, index) => (
+                      <li
+                        key={index}
+                        className="text-slate-700 dark:text-slate-300 flex"
+                      >
+                        <span className="mr-2 text-green-500 flex-shrink-0">
+                          •
+                        </span>
+                        <span>{processText(pro)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-              <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
-                <h3 className="font-semibold text-red-700 dark:text-red-400 mb-3 flex items-center">
-                  <X className="mr-2 h-5 w-5" /> Desventajas
-                </h3>
-                <ul className="space-y-2">
-                  {cons.map((con, index) => (
-                    <li
-                      key={index}
-                      className="text-slate-700 dark:text-slate-300 flex"
-                    >
-                      <span className="mr-2 text-red-500 flex-shrink-0">•</span>
-                      <span>{processText(con)}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
+                  <h3 className="font-semibold text-red-700 dark:text-red-400 mb-3 flex items-center">
+                    <X className="mr-2 h-5 w-5" /> Desventajas
+                  </h3>
+                  <ul className="space-y-2">
+                    {cons.map((con, index) => (
+                      <li
+                        key={index}
+                        className="text-slate-700 dark:text-slate-300 flex"
+                      >
+                        <span className="mr-2 text-red-500 flex-shrink-0">
+                          •
+                        </span>
+                        <span>{processText(con)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </motion.div>
           )}
