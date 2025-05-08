@@ -495,6 +495,8 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
           }}
           transition={{ duration: 0.3 }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           <div className="flex flex-col h-full justify-between">
             <div className="flex justify-between items-center">
@@ -548,9 +550,21 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
                 </div>
               </div>
               <div className="space-y-1">
-                <div className="h-2 bg-green-200 dark:bg-green-700 rounded w-full"></div>
-                <div className="h-2 bg-green-200 dark:bg-green-700 rounded w-3/4"></div>
-                <div className="h-2 bg-amber-200 dark:bg-amber-700 rounded w-1/2"></div>
+                <motion.div
+                  className="h-2 bg-green-200 dark:bg-green-700 rounded w-full"
+                  animate={isHovered ? { opacity: [0, 1] } : { opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                />
+                <motion.div
+                  className="h-2 bg-green-200 dark:bg-green-700 rounded w-3/4"
+                  animate={isHovered ? { opacity: [0, 1] } : { opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.2 }}
+                />
+                <motion.div
+                  className="h-2 bg-amber-200 dark:bg-amber-700 rounded w-1/2"
+                  animate={isHovered ? { opacity: [0, 1] } : { opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.4 }}
+                />
               </div>
             </div>
 
