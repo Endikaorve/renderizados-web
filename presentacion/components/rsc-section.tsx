@@ -5,7 +5,7 @@ import { motion, useInView } from 'framer-motion';
 import { Check, X, ChevronDown, ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import { HydrationModal } from './hydration-modal';
+import { HydrationModal } from './modals/hydration-modal';
 import { VirtualDomModal } from './modals/virtual-dom-modal';
 import { TTIModal } from './modals/tti-modal';
 import { TTFBModal } from './modals/ttfb-modal';
