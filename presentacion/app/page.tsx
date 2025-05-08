@@ -169,8 +169,8 @@ export default function Home() {
             'El shell de la página (layouts, navegación, elementos comunes) se pre-renderiza durante el build.',
             'Las partes dinámicas (contenido personalizado, datos en tiempo real) se renderizan en el servidor en tiempo de ejecución.',
             'Ofrece una solución equilibrada entre rendimiento y dinamismo.',
-            'Introducida en Next.js 15+ como una evolución natural de las estrategias anteriores.',
             'Ideal para aplicaciones con elementos estáticos compartidos y secciones de contenido personalizado.',
+            'Todavía como experimental feature en Next.js',
           ]}
           pros={[
             'Optimiza rendimiento al combinar lo mejor del contenido estático y dinámico',
@@ -181,7 +181,7 @@ export default function Home() {
           ]}
           cons={[
             'Tecnología relativamente nueva, con posibles cambios en la implementación',
-            'Requiere frameworks modernos que lo soporten (Next.js 15+)',
+            'Requiere frameworks modernos que lo soporten (Next.js canary)',
             'Mayor complejidad en el diseño de la arquitectura de componentes',
             'Desafíos en la gestión del estado compartido entre partes estáticas y dinámicas',
             'Curva de aprendizaje para implementarlo correctamente',
