@@ -11,35 +11,30 @@ export function RSCSection() {
   const [showProsAndCons, setShowProsAndCons] = useState(false);
 
   const description = [
-    'React Server Components representa un cambio paradigmático en cómo pensamos sobre los componentes React, no es una estrategia de renderizado en sí misma.',
+    'Representa un cambio paradigmático en cómo pensamos sobre los componentes React, no es una estrategia de renderizado en sí misma.',
     'Introduce una división explícita entre componentes que se ejecutan exclusivamente en el servidor y componentes que se ejecutan en el cliente.',
     'Los Server Components se ejecutan solo en el servidor y nunca se envían al cliente como JavaScript.',
-    'Pueden acceder directamente a recursos del servidor como bases de datos, sistema de archivos o APIs internas sin exponer credenciales.',
+    'Pueden acceder directamente a recursos del backend (BBDD, APIs internas) de forma segura y eficiente.',
     'Su código y dependencias no aumentan el tamaño del bundle JavaScript enviado al navegador.',
     "Los Client Components, marcados con la directiva 'use client', se renderizan inicialmente en el servidor pero también se envían al cliente como JavaScript.",
-    'Esta arquitectura permite una composición flexible donde los Server Components pueden renderizar Client Components y viceversa.',
-    'Se integra perfectamente con React Suspense, permitiendo definir estados de carga y estrategias de fallback dentro de la jerarquía de componentes.',
-    'RSC no reemplaza estrategias como SSR o SSG, sino que se puede combinar con ellas para obtener mejores resultados.',
-    'Proporciona un modelo mental claro para los desarrolladores sobre dónde se ejecuta cada parte de la aplicación.',
+    'Esto reduce drásticamente el JavaScript del navegador, significando que los RSC en sí no se hidratan.',
+    'La hidratación solo es necesaria para los Client Components, que sí manejan interactividad y estado en el cliente.',
+    'Se combinan con estrategias como SSR o SSG para optimizar la carga inicial y hacer la hidratación más selectiva.',
   ];
 
   const pros = [
-    'Reduce significativamente el tamaño del bundle JavaScript enviado al cliente',
-    'Acceso directo a recursos del servidor sin APIs intermedias',
-    'Mejor seguridad al mantener código y datos sensibles solo en el servidor',
-    'Modelo mental claro sobre la ejecución de componentes',
-    'Mejora el rendimiento al mover computación pesada al servidor',
-    'Permite usar librerías solo-servidor sin penalización en el cliente',
-    'Integración perfecta con streaming para carga progresiva',
+    'Menos JavaScript en el cliente: Mejora drástica la velocidad de carga y minimiza la hidratación.',
+    'Acceso directo y seguro al backend: Simplifica la obtención de datos.',
+    'Mejora de rendimiento: Cómputo pesado en servidor, UI más ligera en cliente.',
+    'Carga progresiva con Suspense: Mejora la experiencia de usuario.',
+    'Bundle de cliente más pequeño: Solo los Client Components envían su JS.',
   ];
 
   const cons = [
-    'Curva de aprendizaje significativa para el nuevo paradigma',
-    'Limitaciones en componentes de servidor (no pueden usar estado o efectos)',
-    'Requiere frameworks que soporten la arquitectura RSC',
-    'Mayor complejidad en la comunicación entre componentes servidor y cliente',
-    'Consideraciones especiales para testing y debugging',
-    'Potenciales desafíos de rendimiento si no se diseña correctamente la frontera cliente/servidor',
+    'Curva de aprendizaje: Adaptarse al nuevo modelo mental cliente/servidor.',
+    'Limitaciones de los RSC: No pueden usar estado (useState) ni efectos (useEffect) directamente.',
+    'Dependencia de Frameworks: Mejor aprovechados con frameworks como Next.js que soportan la arquitectura.',
+    'Gestión de la interactividad: El estado y los eventos se manejan en Client Components, requiriendo una clara separación.',
   ];
 
   return (
