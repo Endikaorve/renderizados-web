@@ -1,33 +1,33 @@
-"use client"
+'use client';
 
-import { useState, useEffect } from "react"
-import { useTheme } from "next-themes"
-import { Moon, Sun, Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
+import { Moon, Sun, Menu, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function Navbar() {
-  const [mounted, setMounted] = useState(false)
-  const { theme, setTheme } = useTheme()
-  const [isOpen, setIsOpen] = useState(false)
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  const toggleMenu = () => setIsOpen(!isOpen)
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   const navItems = [
-    { name: "Introducción", href: "#intro" },
-    { name: "CSR", href: "#csr" },
-    { name: "SSG", href: "#ssg" },
-    { name: "ISR", href: "#isr" },
-    { name: "SSR", href: "#ssr" },
-    { name: "Streaming", href: "#streaming" },
-    { name: "PPR", href: "#ppr" },
-    { name: "RSC", href: "#rsc" },
-    { name: "Conclusiones", href: "#conclusion" },
-  ]
+    { name: 'Introducción', href: '#intro' },
+    { name: 'CSR', href: '#csr' },
+    { name: 'SSG', href: '#ssg' },
+    { name: 'ISR', href: '#isr' },
+    { name: 'SSR', href: '#ssr' },
+    { name: 'Streaming', href: '#streaming' },
+    { name: 'PPR', href: '#ppr' },
+    { name: 'RSC', href: '#rsc' },
+    { name: 'Conclusiones', href: '#conclusion' },
+  ];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-950/80">
@@ -40,7 +40,7 @@ export function Navbar() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-6">
-          {navItems.map((item) => (
+          {navItems.map(item => (
             <a
               key={item.name}
               href={item.href}
@@ -56,15 +56,25 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               aria-label="Toggle theme"
             >
-              {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              {theme === 'dark' ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
             </Button>
           )}
 
           {/* Mobile Menu Button */}
-          <Button variant="ghost" size="icon" className="md:hidden" onClick={toggleMenu} aria-label="Toggle menu">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+          >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
@@ -75,13 +85,13 @@ export function Navbar() {
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
+            animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
             className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950"
           >
             <nav className="flex flex-col space-y-4 p-4">
-              {navItems.map((item) => (
+              {navItems.map(item => (
                 <a
                   key={item.name}
                   href={item.href}
@@ -96,5 +106,5 @@ export function Navbar() {
         )}
       </AnimatePresence>
     </header>
-  )
+  );
 }
