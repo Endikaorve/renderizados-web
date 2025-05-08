@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
-import "../App.css";
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
+import '../App.css';
 
 function ListadoPokemon() {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState('');
 
   const {
     data: pokemonList,
@@ -12,15 +12,15 @@ function ListadoPokemon() {
     isError,
     error,
   } = useQuery({
-    queryKey: ["pokemonList"],
+    queryKey: ['pokemonList'],
     queryFn: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 5000));
 
       const response = await fetch(
-        "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+        'https://pokeapi.co/api/v2/pokemon?limit=151&offset=0',
       );
       if (!response.ok) {
-        throw new Error("Error al cargar la lista de Pokémon");
+        throw new Error('Error al cargar la lista de Pokémon');
       }
       const data = await response.json();
       return data.results;
@@ -28,8 +28,8 @@ function ListadoPokemon() {
   });
 
   const pokemonFiltrados = pokemonList
-    ? pokemonList.filter((pokemon) =>
-        pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
+    ? pokemonList.filter(pokemon =>
+        pokemon.name.toLowerCase().includes(busqueda.toLowerCase()),
       )
     : [];
 
@@ -42,7 +42,7 @@ function ListadoPokemon() {
         <input
           type="text"
           value={busqueda}
-          onChange={(e) => setBusqueda(e.target.value)}
+          onChange={e => setBusqueda(e.target.value)}
           placeholder="Buscar Pokémon..."
           className="search-input"
         />
@@ -58,9 +58,9 @@ function ListadoPokemon() {
 
         {!isLoading && !isError && (
           <ul className="pokemon-list">
-            {pokemonFiltrados.map((pokemon) => {
+            {pokemonFiltrados.map(pokemon => {
               const pokemonId =
-                pokemon.url.split("/")[pokemon.url.split("/").length - 2];
+                pokemon.url.split('/')[pokemon.url.split('/').length - 2];
               return (
                 <li key={pokemon.name} className="pokemon-item">
                   <Link to={`/detalles/${pokemon.name}`}>

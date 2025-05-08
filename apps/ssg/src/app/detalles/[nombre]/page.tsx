@@ -1,6 +1,6 @@
-import Link from "next/link";
-import Image from "next/image";
-import { notFound } from "next/navigation";
+import Link from 'next/link';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
 // Definir tipos
 interface PokemonType {
@@ -12,8 +12,8 @@ interface PokemonType {
 // Define qué rutas se pre-renderizarán en el build
 export async function generateStaticParams() {
   const res = await fetch(
-    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0",
-    { cache: "force-cache" }
+    'https://pokeapi.co/api/v2/pokemon?limit=151&offset=0',
+    { cache: 'force-cache' },
   );
   const data = await res.json();
 
@@ -33,10 +33,10 @@ export default async function Page({
   let pokemon;
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 5000));
 
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`, {
-      cache: "force-cache",
+      cache: 'force-cache',
     });
 
     if (!res.ok) {
@@ -80,8 +80,8 @@ export default async function Page({
               <strong>Peso:</strong> {pokemon.weight / 10} kg
             </p>
             <p>
-              <strong>Tipos:</strong>{" "}
-              {pokemon.types.map((t: PokemonType) => t.type.name).join(", ")}
+              <strong>Tipos:</strong>{' '}
+              {pokemon.types.map((t: PokemonType) => t.type.name).join(', ')}
             </p>
             <p className="generation-time">
               <small>Página generada/revalidada el: {generadoEn}</small>

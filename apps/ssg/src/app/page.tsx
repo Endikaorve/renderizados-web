@@ -1,4 +1,4 @@
-import PokemonSearch from "@/components/PokemonSearch";
+import PokemonSearch from '@/components/PokemonSearch';
 
 // Datos generados estáticamente durante el build
 export async function generateStaticParams() {
@@ -6,15 +6,15 @@ export async function generateStaticParams() {
 }
 
 async function getData() {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  await new Promise(resolve => setTimeout(resolve, 5000));
 
   const res = await fetch(
-    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0",
-    { cache: "force-cache" } // force-cache es el equivalente al comportamiento de SSG en App Router
+    'https://pokeapi.co/api/v2/pokemon?limit=151&offset=0',
+    { cache: 'force-cache' }, // force-cache es el equivalente al comportamiento de SSG en App Router
   );
 
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    throw new Error('Failed to fetch data');
   }
 
   const data = await res.json();

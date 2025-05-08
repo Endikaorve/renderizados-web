@@ -33,7 +33,7 @@ export default async function Page({
   let pokemon;
 
   try {
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 5000));
 
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`, {
       next: { revalidate: 60 }, // Revalidación cada 60 segundos (1 minuto)

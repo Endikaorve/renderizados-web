@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import Image from "next/image";
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import Image from 'next/image';
 
 // Definir interfaces para los datos del Pokémon
 interface PokemonTypeInfo {
@@ -29,16 +29,16 @@ interface PageProps {
 }
 
 async function fetchPokemonDetail(
-  nombre: string
+  nombre: string,
 ): Promise<PokemonDetail | null> {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 5000));
 
     const response = await fetch(
       `https://pokeapi.co/api/v2/pokemon/${nombre}`,
       {
-        cache: "no-store",
-      }
+        cache: 'no-store',
+      },
     );
     if (!response.ok) {
       // Si la respuesta no es OK (ej. 404), devolvemos null
@@ -47,7 +47,7 @@ async function fetchPokemonDetail(
     const pokemon: PokemonDetail = await response.json();
     return pokemon;
   } catch (error) {
-    console.error("Error fetching Pokémon detail:", error);
+    console.error('Error fetching Pokémon detail:', error);
     // Si hay un error en el fetch (red, etc.), también devolvemos null
     return null;
   }
@@ -65,10 +65,10 @@ export default async function DetallePokemonPage({ params }: PageProps) {
 
   return (
     <div className="container">
-      {" "}
+      {' '}
       {/* Reutilizar clases si aplican */}
       <div className="card">
-        {" "}
+        {' '}
         {/* Reutilizar clases si aplican */}
         <Link href="/">Volver al listado</Link>
         <h1>Detalles (SSR): {pokemon.name}</h1>
@@ -82,7 +82,7 @@ export default async function DetallePokemonPage({ params }: PageProps) {
         <p>ID: {pokemon.id}</p>
         <p>Altura: {pokemon.height / 10} m</p>
         <p>Peso: {pokemon.weight / 10} kg</p>
-        <p>Tipos: {pokemon.types.map((t) => t.type.name).join(", ")}</p>
+        <p>Tipos: {pokemon.types.map(t => t.type.name).join(', ')}</p>
       </div>
     </div>
   );

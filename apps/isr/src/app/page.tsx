@@ -6,7 +6,7 @@ export async function generateStaticParams() {
 }
 
 async function getData() {
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  await new Promise(resolve => setTimeout(resolve, 5000));
 
   const res = await fetch(
     'https://pokeapi.co/api/v2/pokemon?limit=151&offset=0',

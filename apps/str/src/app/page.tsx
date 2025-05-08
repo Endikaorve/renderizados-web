@@ -1,5 +1,5 @@
-import { Suspense } from "react";
-import { PokemonSearch } from "./pokemon-search";
+import { Suspense } from 'react';
+import { PokemonSearch } from './pokemon-search';
 
 // Interfaz para la respuesta de la API y los Pokémon
 interface PokemonListItem {
@@ -30,17 +30,17 @@ async function PokemonList() {
 
 // Función asíncrona para obtener los datos
 async function fetchPokemonList(): Promise<PokemonListItem[]> {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  await new Promise(resolve => setTimeout(resolve, 5000));
 
   const response = await fetch(
-    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0",
+    'https://pokeapi.co/api/v2/pokemon?limit=151&offset=0',
     {
-      cache: "no-store", // Forzar fetch en cada request para que sea dinámico
-    }
+      cache: 'no-store', // Forzar fetch en cada request para que sea dinámico
+    },
   );
 
   if (!response.ok) {
-    throw new Error("Error al cargar los datos de Pokémon");
+    throw new Error('Error al cargar los datos de Pokémon');
   }
 
   const data: PokemonApiResponse = await response.json();

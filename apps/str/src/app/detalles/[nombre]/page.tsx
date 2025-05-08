@@ -1,7 +1,7 @@
-import { Suspense } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { notFound } from "next/navigation";
+import { Suspense } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
 // Definir interfaces para los datos del Pokémon
 interface PokemonTypeInfo {
@@ -60,22 +60,22 @@ async function PokemonDetails({ nombre }: { nombre: string }) {
       <p>ID: {pokemon.id}</p>
       <p>Altura: {pokemon.height / 10} m</p>
       <p>Peso: {pokemon.weight / 10} kg</p>
-      <p>Tipos: {pokemon.types.map((t) => t.type.name).join(", ")}</p>
+      <p>Tipos: {pokemon.types.map(t => t.type.name).join(', ')}</p>
     </div>
   );
 }
 
 async function fetchPokemonDetail(
-  nombre: string
+  nombre: string,
 ): Promise<PokemonDetail | null> {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 5000));
 
     const response = await fetch(
       `https://pokeapi.co/api/v2/pokemon/${nombre}`,
       {
-        cache: "no-store", // Forzar fetch en cada request para que sea dinámico
-      }
+        cache: 'no-store', // Forzar fetch en cada request para que sea dinámico
+      },
     );
     if (!response.ok) {
       return null;
@@ -83,7 +83,7 @@ async function fetchPokemonDetail(
     const pokemon: PokemonDetail = await response.json();
     return pokemon;
   } catch (error) {
-    console.error("Error fetching Pokémon detail:", error);
+    console.error('Error fetching Pokémon detail:', error);
     return null;
   }
 }

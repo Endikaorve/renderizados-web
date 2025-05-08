@@ -1,5 +1,5 @@
-import { useParams, Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useParams, Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 function DetallePokemon() {
   const { nombre } = useParams(); // Obtener nombre de la URL
@@ -9,18 +9,18 @@ function DetallePokemon() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["pokemonDetail", nombre],
+    queryKey: ['pokemonDetail', nombre],
     queryFn: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 5000));
 
       const response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${nombre}`
+        `https://pokeapi.co/api/v2/pokemon/${nombre}`,
       );
       if (!response.ok) {
         if (response.status === 404) {
-          throw new Error("Pokémon no encontrado");
+          throw new Error('Pokémon no encontrado');
         }
-        throw new Error("Error al cargar los datos del Pokémon");
+        throw new Error('Error al cargar los datos del Pokémon');
       }
       return response.json();
     },
@@ -30,7 +30,7 @@ function DetallePokemon() {
 
   if (isLoading) return <p>Cargando detalles...</p>;
   // Mostrar error específico si el Pokémon no se encontró (404)
-  if (error?.message === "Pokémon no encontrado") {
+  if (error?.message === 'Pokémon no encontrado') {
     return (
       <div>
         <Link to="/">Volver al listado</Link>
@@ -51,7 +51,7 @@ function DetallePokemon() {
       <p>ID: {pokemon.id}</p>
       <p>Altura: {pokemon.height / 10} m</p>
       <p>Peso: {pokemon.weight / 10} kg</p>
-      <p>Tipos: {pokemon.types.map((t) => t.type.name).join(", ")}</p>
+      <p>Tipos: {pokemon.types.map(t => t.type.name).join(', ')}</p>
     </div>
   );
 }

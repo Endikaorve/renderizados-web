@@ -1,7 +1,7 @@
-import { Suspense } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { notFound } from "next/navigation";
+import { Suspense } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
 // Habilitar PPR para esta ruta
 export const experimental_ppr = true;
@@ -63,22 +63,22 @@ async function PokemonDetails({ nombre }: { nombre: string }) {
       <p>ID: {pokemon.id}</p>
       <p>Altura: {pokemon.height / 10} m</p>
       <p>Peso: {pokemon.weight / 10} kg</p>
-      <p>Tipos: {pokemon.types.map((t) => t.type.name).join(", ")}</p>
+      <p>Tipos: {pokemon.types.map(t => t.type.name).join(', ')}</p>
     </div>
   );
 }
 
 async function fetchPokemonDetail(
-  nombre: string
+  nombre: string,
 ): Promise<PokemonDetail | null> {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 5000));
 
     const response = await fetch(
       `https://pokeapi.co/api/v2/pokemon/${nombre}`,
       {
-        cache: "no-store", // Forzar fetch en cada request para que sea dinámico
-      }
+        cache: 'no-store', // Forzar fetch en cada request para que sea dinámico
+      },
     );
     if (!response.ok) {
       return null;
@@ -86,7 +86,7 @@ async function fetchPokemonDetail(
     const pokemon: PokemonDetail = await response.json();
     return pokemon;
   } catch (error) {
-    console.error("Error fetching Pokémon detail:", error);
+    console.error('Error fetching Pokémon detail:', error);
     return null;
   }
 }
@@ -121,7 +121,7 @@ export async function generateMetadata({ params }: PageProps) {
 export async function generateStaticParams() {
   try {
     const response = await fetch(
-      "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+      'https://pokeapi.co/api/v2/pokemon?limit=151&offset=0',
     );
 
     if (!response.ok) {
@@ -133,7 +133,7 @@ export async function generateStaticParams() {
       nombre: pokemon.name,
     }));
   } catch (error) {
-    console.error("Error generating static params:", error);
+    console.error('Error generating static params:', error);
     return [];
   }
 }
