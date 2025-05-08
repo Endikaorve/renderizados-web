@@ -561,9 +561,12 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
                   transition={{ duration: 0.3, delay: 0.2 }}
                 />
                 <motion.div
-                  className="h-2 bg-amber-200 dark:bg-amber-700 rounded w-1/2"
-                  animate={isHovered ? { opacity: [0, 1] } : { opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.4 }}
+                  className="h-2 bg-amber-200 dark:bg-amber-700 rounded"
+                  initial={{ width: 0 }}
+                  animate={
+                    isHovered ? { width: ['0%', '50%'] } : { width: '50%' }
+                  }
+                  transition={{ duration: 0.8, delay: 0.4 }}
                 />
               </div>
             </div>
