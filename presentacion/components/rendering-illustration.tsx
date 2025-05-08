@@ -101,7 +101,20 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
           <div className="flex flex-col h-full justify-between">
             <div className="flex justify-between items-center">
               <div className="text-center">
-                <Server className="h-10 w-10 text-green-500 mx-auto" />
+                <motion.div
+                  initial={{ opacity: 1 }}
+                  animate={{
+                    opacity: [1, 0.7, 1],
+                    scale: [1, 1.1, 1],
+                  }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Number.POSITIVE_INFINITY,
+                    repeatType: 'loop',
+                  }}
+                >
+                  <Server className="h-10 w-10 text-green-500 mx-auto" />
+                </motion.div>
                 <span className="text-xs mt-1 block text-slate-600 dark:text-slate-400">
                   Build Time
                 </span>
@@ -131,9 +144,33 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
                 HTML pre-renderizado
               </div>
               <div className="space-y-1">
-                <div className="h-2 bg-green-200 dark:bg-green-700 rounded w-full"></div>
-                <div className="h-2 bg-green-200 dark:bg-green-700 rounded w-3/4"></div>
-                <div className="h-2 bg-green-200 dark:bg-green-700 rounded w-1/2"></div>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: '100%' }}
+                  transition={{
+                    duration: 1,
+                    delay: 0.2,
+                  }}
+                  className="h-2 bg-green-200 dark:bg-green-700 rounded"
+                />
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: '75%' }}
+                  transition={{
+                    duration: 1,
+                    delay: 0.5,
+                  }}
+                  className="h-2 bg-green-200 dark:bg-green-700 rounded"
+                />
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: '50%' }}
+                  transition={{
+                    duration: 1,
+                    delay: 0.8,
+                  }}
+                  className="h-2 bg-green-200 dark:bg-green-700 rounded"
+                />
               </div>
             </div>
 
@@ -160,7 +197,18 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
           <div className="flex flex-col h-full justify-between">
             <div className="flex justify-between items-center">
               <div className="text-center">
-                <Server className="h-10 w-10 text-cyan-500 mx-auto" />
+                <motion.div
+                  animate={{
+                    scale: [1, 1.1, 1],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Number.POSITIVE_INFINITY,
+                    repeatType: 'loop',
+                  }}
+                >
+                  <Server className="h-10 w-10 text-cyan-500 mx-auto" />
+                </motion.div>
                 <span className="text-xs mt-1 block text-slate-600 dark:text-slate-400">
                   Servidor
                 </span>
@@ -207,7 +255,10 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
                   Contenido estático
                 </div>
                 <motion.div
-                  animate={{ opacity: [1, 0.5, 1] }}
+                  animate={{
+                    opacity: [1, 0.5, 1],
+                    color: ['#0ea5e9', '#06b6d4', '#0ea5e9'],
+                  }}
                   transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
                   className="text-xs text-cyan-500 dark:text-cyan-400"
                 >
@@ -219,11 +270,34 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
                   className="h-2 bg-cyan-200 dark:bg-cyan-700 rounded w-full"
                   animate={{
                     backgroundColor: ['#bae6fd', '#0ea5e9', '#bae6fd'],
+                    scale: [1, 1.02, 1],
                   }}
                   transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
                 ></motion.div>
-                <div className="h-2 bg-cyan-200 dark:bg-cyan-700 rounded w-3/4"></div>
-                <div className="h-2 bg-cyan-200 dark:bg-cyan-700 rounded w-1/2"></div>
+                <motion.div
+                  className="h-2 bg-cyan-200 dark:bg-cyan-700 rounded w-3/4"
+                  animate={{
+                    backgroundColor: ['#bae6fd', '#0ea5e9', '#bae6fd'],
+                    scale: [1, 1.02, 1],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Number.POSITIVE_INFINITY,
+                    delay: 0.5,
+                  }}
+                ></motion.div>
+                <motion.div
+                  className="h-2 bg-cyan-200 dark:bg-cyan-700 rounded w-1/2"
+                  animate={{
+                    backgroundColor: ['#bae6fd', '#0ea5e9', '#bae6fd'],
+                    scale: [1, 1.02, 1],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Number.POSITIVE_INFINITY,
+                    delay: 1,
+                  }}
+                ></motion.div>
               </div>
             </div>
 
@@ -259,7 +333,18 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               <ArrowRight className="h-6 w-6 text-slate-500" />
 
               <div className="text-center">
-                <Server className="h-10 w-10 text-purple-500 mx-auto" />
+                <motion.div
+                  animate={{
+                    scale: [1, 1.1, 1],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Number.POSITIVE_INFINITY,
+                    repeatType: 'loop',
+                  }}
+                >
+                  <Server className="h-10 w-10 text-purple-500 mx-auto" />
+                </motion.div>
                 <span className="text-xs mt-1 block text-slate-600 dark:text-slate-400">
                   Servidor
                 </span>
@@ -282,12 +367,29 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               <motion.div
                 className="space-y-1"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                animate={{
+                  opacity: 1,
+                }}
                 transition={{ duration: 0.5 }}
               >
-                <div className="h-2 bg-purple-200 dark:bg-purple-700 rounded w-full"></div>
-                <div className="h-2 bg-purple-200 dark:bg-purple-700 rounded w-3/4"></div>
-                <div className="h-2 bg-purple-200 dark:bg-purple-700 rounded w-1/2"></div>
+                <motion.div
+                  initial={{ width: 0, x: -20, opacity: 0 }}
+                  animate={{ width: '100%', x: 0, opacity: 1 }}
+                  transition={{ duration: 0.7, delay: 0.2 }}
+                  className="h-2 bg-purple-200 dark:bg-purple-700 rounded"
+                />
+                <motion.div
+                  initial={{ width: 0, x: -20, opacity: 0 }}
+                  animate={{ width: '75%', x: 0, opacity: 1 }}
+                  transition={{ duration: 0.7, delay: 0.4 }}
+                  className="h-2 bg-purple-200 dark:bg-purple-700 rounded"
+                />
+                <motion.div
+                  initial={{ width: 0, x: -20, opacity: 0 }}
+                  animate={{ width: '50%', x: 0, opacity: 1 }}
+                  transition={{ duration: 0.7, delay: 0.6 }}
+                  className="h-2 bg-purple-200 dark:bg-purple-700 rounded"
+                />
               </motion.div>
             </div>
 
@@ -355,22 +457,22 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               <div className="text-xs text-slate-500 dark:text-slate-300 mb-2">
                 Streaming de HTML
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <motion.div
                   className="h-2 bg-blue-200 dark:bg-blue-700 rounded w-full"
                   animate={isHovered ? { opacity: [0, 1] } : { opacity: 1 }}
                   transition={{ duration: 0.3 }}
-                ></motion.div>
+                />
                 <motion.div
                   className="h-2 bg-purple-200 dark:bg-purple-700 rounded w-3/4"
                   animate={isHovered ? { opacity: [0, 1] } : { opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.2 }}
-                ></motion.div>
+                />
                 <motion.div
                   className="h-2 bg-indigo-200 dark:bg-indigo-700 rounded w-1/2"
                   animate={isHovered ? { opacity: [0, 1] } : { opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.4 }}
-                ></motion.div>
+                />
               </div>
             </div>
 
@@ -445,7 +547,7 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
                   Dinámico (Datos)
                 </div>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <div className="h-2 bg-green-200 dark:bg-green-700 rounded w-full"></div>
                 <div className="h-2 bg-green-200 dark:bg-green-700 rounded w-3/4"></div>
                 <div className="h-2 bg-amber-200 dark:bg-amber-700 rounded w-1/2"></div>
@@ -493,20 +595,80 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
 
             <div className="mt-4 p-3 bg-white dark:bg-slate-600 rounded-lg shadow-sm">
               <div className="flex justify-between mb-2">
-                <div className="text-xs text-indigo-500 dark:text-indigo-400">
+                <motion.div
+                  animate={{
+                    color: ['#6366f1', '#4f46e5', '#6366f1'],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Number.POSITIVE_INFINITY,
+                  }}
+                  className="text-xs text-indigo-500 dark:text-indigo-400"
+                >
                   Server Components
-                </div>
-                <div className="text-xs text-violet-500 dark:text-violet-400">
+                </motion.div>
+                <motion.div
+                  animate={{
+                    color: ['#8b5cf6', '#7c3aed', '#8b5cf6'],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Number.POSITIVE_INFINITY,
+                    delay: 1.5,
+                  }}
+                  className="text-xs text-violet-500 dark:text-violet-400"
+                >
                   Client Components
-                </div>
+                </motion.div>
               </div>
-              <div className="space-y-2">
-                <div className="h-2 bg-indigo-200 dark:bg-indigo-700 rounded w-full"></div>
+              <div className="space-y-1">
+                <motion.div
+                  animate={{
+                    backgroundColor: ['#c7d2fe', '#818cf8', '#c7d2fe'],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Number.POSITIVE_INFINITY,
+                  }}
+                  className="h-2 bg-indigo-200 dark:bg-indigo-700 rounded w-full"
+                ></motion.div>
                 <div className="flex space-x-1">
-                  <div className="h-2 bg-indigo-200 dark:bg-indigo-700 rounded w-1/2"></div>
-                  <div className="h-2 bg-violet-200 dark:bg-violet-700 rounded w-1/4"></div>
+                  <motion.div
+                    animate={{
+                      backgroundColor: ['#c7d2fe', '#818cf8', '#c7d2fe'],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Number.POSITIVE_INFINITY,
+                      delay: 0.5,
+                    }}
+                    className="h-2 bg-indigo-200 dark:bg-indigo-700 rounded w-3/4"
+                  ></motion.div>
+                  <motion.div
+                    animate={{
+                      backgroundColor: ['#ddd6fe', '#a78bfa', '#ddd6fe'],
+                      x: [0, 2, 0],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Number.POSITIVE_INFINITY,
+                      delay: 1,
+                    }}
+                    className="h-2 bg-violet-200 dark:bg-violet-700 rounded w-1/4"
+                  ></motion.div>
                 </div>
-                <div className="h-2 bg-violet-200 dark:bg-violet-700 rounded w-1/3"></div>
+                <motion.div
+                  animate={{
+                    backgroundColor: ['#ddd6fe', '#a78bfa', '#ddd6fe'],
+                    x: [0, 2, 0],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Number.POSITIVE_INFINITY,
+                    delay: 1.5,
+                  }}
+                  className="h-2 bg-violet-200 dark:bg-violet-700 rounded w-1/3"
+                ></motion.div>
               </div>
             </div>
 
