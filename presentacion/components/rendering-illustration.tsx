@@ -24,11 +24,6 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
       return (
         <motion.div
           className="relative w-full max-w-md h-64 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg"
-          whileHover={{
-            y: -5,
-            boxShadow:
-              '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-          }}
           transition={{ duration: 0.3 }}
         >
           <div className="flex flex-col h-full justify-between">
@@ -91,12 +86,9 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
       return (
         <motion.div
           className="relative w-full max-w-md h-64 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg"
-          whileHover={{
-            y: -5,
-            boxShadow:
-              '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-          }}
           transition={{ duration: 0.3 }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           <div className="flex flex-col h-full justify-between">
             <div className="flex justify-between items-center">
@@ -145,31 +137,22 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               </div>
               <div className="space-y-1">
                 <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: '100%' }}
-                  transition={{
-                    duration: 1,
-                    delay: 0.2,
-                  }}
-                  className="h-2 bg-green-200 dark:bg-green-700 rounded"
+                  className="h-2 bg-green-200 dark:bg-green-700 rounded w-full"
+                  initial={{ opacity: 0 }}
+                  animate={isHovered ? { opacity: [0, 1] } : { opacity: 1 }}
+                  transition={{ duration: 0.4 }}
                 />
                 <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: '75%' }}
-                  transition={{
-                    duration: 1,
-                    delay: 0.5,
-                  }}
-                  className="h-2 bg-green-200 dark:bg-green-700 rounded"
+                  className="h-2 bg-green-200 dark:bg-green-700 rounded w-3/4"
+                  initial={{ opacity: 0 }}
+                  animate={isHovered ? { opacity: [0, 1] } : { opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 0.2 }}
                 />
                 <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: '50%' }}
-                  transition={{
-                    duration: 1,
-                    delay: 0.8,
-                  }}
-                  className="h-2 bg-green-200 dark:bg-green-700 rounded"
+                  className="h-2 bg-green-200 dark:bg-green-700 rounded w-1/2"
+                  initial={{ opacity: 0 }}
+                  animate={isHovered ? { opacity: [0, 1] } : { opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 0.4 }}
                 />
               </div>
             </div>
@@ -187,11 +170,6 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
       return (
         <motion.div
           className="relative w-full max-w-md h-64 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg"
-          whileHover={{
-            y: -5,
-            boxShadow:
-              '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-          }}
           transition={{ duration: 0.3 }}
         >
           <div className="flex flex-col h-full justify-between">
@@ -314,11 +292,6 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
       return (
         <motion.div
           className="relative w-full max-w-md h-64 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg"
-          whileHover={{
-            y: -5,
-            boxShadow:
-              '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-          }}
           transition={{ duration: 0.3 }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -407,11 +380,6 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
       return (
         <motion.div
           className="relative w-full max-w-md h-64 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg"
-          whileHover={{
-            y: -5,
-            boxShadow:
-              '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-          }}
           transition={{ duration: 0.3 }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -491,11 +459,6 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
       return (
         <motion.div
           className="relative w-full max-w-md h-64 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg"
-          whileHover={{
-            y: -5,
-            boxShadow:
-              '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-          }}
           transition={{ duration: 0.3 }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -586,11 +549,6 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
       return (
         <motion.div
           className="relative w-full max-w-md h-64 bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg"
-          whileHover={{
-            y: -5,
-            boxShadow:
-              '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-          }}
           transition={{ duration: 0.3 }}
         >
           <div className="flex flex-col h-full justify-between">
