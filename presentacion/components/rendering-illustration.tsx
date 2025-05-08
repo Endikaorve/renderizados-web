@@ -604,7 +604,7 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               <ArrowRight className="h-6 w-6 text-slate-500 self-center" />
 
               <div className="text-center">
-                <Monitor className="h-10 w-10 text-slate-500 mx-auto" />
+                <Monitor className="h-10 w-10 text-violet-500 dark:text-violet-400 mx-auto" />
                 <span className="text-xs mt-1 block text-slate-600 dark:text-slate-400">
                   Cliente
                 </span>
