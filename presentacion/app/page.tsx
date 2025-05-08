@@ -19,9 +19,9 @@ export default function Home() {
           title="Client Side Rendering (CSR)"
           description={[
             'Todo el proceso de renderizado ocurre en el navegador del cliente.',
+            'React utiliza este enfoque en sus implementaciones tradicionales de Single Page Applications (SPAs).',
             'El servidor entrega un archivo HTML mínimo con enlaces a archivos JavaScript.',
             'El navegador descarga, analiza y ejecuta estos scripts para construir la interfaz de usuario.',
-            'React utiliza este enfoque en sus implementaciones tradicionales de Single Page Applications (SPAs).',
             'Una vez cargada la aplicación JavaScript, la navegación entre páginas no requiere nuevas solicitudes de HTML al servidor.',
             'La aplicación maneja las transiciones de vista, solicitando solo los datos necesarios a través de APIs.',
             'Este enfoque crea una experiencia de usuario más fluida después de la carga inicial, similar a una aplicación nativa.',
@@ -53,7 +53,6 @@ export default function Home() {
             'Se obtienen los datos necesarios y se generan archivos HTML estáticos para cada ruta.',
             'Estos archivos pueden ser servidos desde un CDN, resultando en tiempos de carga extremadamente rápidos.',
             "La hidratación es un concepto fundamental: React 'hidrata' el HTML estático conectándolo con JavaScript.",
-            'Durante la hidratación, React establece los event listeners y reconcilia el DOM virtual con el HTML pre-renderizado.',
             'Este proceso permite que el contenido se muestre rápidamente mientras la interactividad se establece progresivamente.',
           ]}
           pros={[
@@ -66,10 +65,10 @@ export default function Home() {
           ]}
           cons={[
             'Poco flexible para contenido dinámico o personalizado',
-            'Tiempos de build largos para sitios grandes',
-            'Requiere reconstrucción completa para actualizar contenido',
             'No adecuado para contenido que cambia frecuentemente',
             'Limitaciones para contenido específico de usuario (como dashboards personalizados)',
+            'Requiere reconstrucción completa para actualizar contenido',
+            'Tiempos de build largos para sitios grandes',
           ]}
           illustration="static-generation"
         />
