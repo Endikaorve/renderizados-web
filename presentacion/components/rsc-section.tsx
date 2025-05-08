@@ -12,30 +12,31 @@ export function RSCSection() {
   const [showProsAndCons, setShowProsAndCons] = useState(false);
 
   const description = [
-    'Representa un cambio paradigmático en cómo pensamos sobre los componentes React, no es una estrategia de renderizado en sí misma.',
-    'Introduce una división explícita entre componentes que se ejecutan exclusivamente en el servidor y componentes que se ejecutan en el cliente.',
-    'Los Server Components se ejecutan solo en el servidor y nunca se envían al cliente como JavaScript.',
-    'Pueden acceder directamente a recursos del backend (BBDD, APIs internas) de forma segura y eficiente.',
-    'Su código y dependencias no aumentan el tamaño del bundle JavaScript enviado al navegador.',
-    "Los Client Components, marcados con la directiva 'use client', se renderizan inicialmente en el servidor pero también se envían al cliente como JavaScript.",
-    'Esto reduce drásticamente el JavaScript del navegador, significando que los RSC en sí no se hidratan.',
-    'La hidratación solo es necesaria para los Client Components, que sí manejan interactividad y estado en el cliente.',
-    'Se combinan con estrategias como SSR o SSG para optimizar la carga inicial y hacer la hidratación más selectiva.',
+    'Paradigma de arquitectura que divide explícitamente los componentes entre servidor y cliente, no es una estrategia de renderizado por sí misma.',
+    'Los Server Components se ejecutan exclusivamente en el servidor y su código nunca se envía al cliente como JavaScript.',
+    'Pueden acceder directamente a recursos del backend (bases de datos, sistemas de archivos, APIs internas) de forma segura.',
+    "Los Client Components, marcados con la directiva 'use client', se renderizan inicialmente en el servidor pero también se envían al cliente.",
+    'La hidratación solo es necesaria para los Client Components, mientras que los Server Components no requieren este proceso.',
+    'Esta arquitectura reduce drásticamente el JavaScript enviado al navegador, mejorando los tiempos de carga e interactividad.',
+    'Se combina con estrategias como SSR, SSG o Streaming para optimizar diferentes aspectos de la experiencia de usuario.',
+    'Permite una clara separación de responsabilidades: lógica de negocio en el servidor, interactividad en el cliente.',
+    'Ideal para aplicaciones que requieren acceso directo a datos del backend manteniendo una experiencia de usuario fluida.',
   ];
 
   const pros = [
-    'Menos JavaScript en el cliente: Mejora drástica la velocidad de carga y minimiza la hidratación.',
-    'Acceso directo y seguro al backend: Simplifica la obtención de datos.',
-    'Mejora de rendimiento: Cómputo pesado en servidor, UI más ligera en cliente.',
-    'Carga progresiva con Suspense: Mejora la experiencia de usuario.',
-    'Bundle de cliente más pequeño: Solo los Client Components envían su JS.',
+    'Reducción drástica de JavaScript en el cliente: Mejora velocidad de carga e interactividad.',
+    'Acceso directo a recursos del backend: Elimina la necesidad de APIs intermedias para datos internos.',
+    'Mejor rendimiento: Ejecuta computación pesada en el servidor, manteniendo el cliente ligero.',
+    'Seguridad mejorada: Código sensible y credenciales permanecen exclusivamente en el servidor.',
+    'Bundle de cliente optimizado: Solo los componentes interactivos envían su JavaScript al navegador.',
   ];
 
   const cons = [
-    'Curva de aprendizaje: Adaptarse al nuevo modelo mental cliente/servidor.',
-    'Limitaciones de los RSC: No pueden usar estado (useState) ni efectos (useEffect) directamente.',
-    'Dependencia de Frameworks: Mejor aprovechados con frameworks como Next.js que soportan la arquitectura.',
-    'Gestión de la interactividad: El estado y los eventos se manejan en Client Components, requiriendo una clara separación.',
+    'Nuevo modelo mental: Requiere repensar la arquitectura de componentes y la división cliente/servidor.',
+    'Limitaciones en Server Components: No pueden usar hooks de estado (useState) ni efectos (useEffect).',
+    'Mayor dependencia del framework: Funcionan mejor dentro de entornos como Next.js que soportan la arquitectura.',
+    'Complejidad en la composición: Gestionar correctamente la interacción entre Server y Client Components.',
+    'Potenciales desafíos de debugging al tener código ejecutándose en diferentes entornos.',
   ];
 
   return (
