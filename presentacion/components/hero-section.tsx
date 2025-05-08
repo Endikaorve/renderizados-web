@@ -39,17 +39,39 @@ export function HeroSection() {
             </h2>
             <div className="space-y-4 text-left">
               <p className="text-slate-700 dark:text-slate-300">
-                <strong>Renderizado web</strong> es el proceso de convertir
-                código en interfaces visuales interactivas. Es fundamental en
-                aplicaciones modernas, impactando directamente en la experiencia
-                de usuario (UX), el posicionamiento en buscadores (SEO) y el
-                rendimiento general.
+                <strong>El renderizado web</strong> es el proceso técnico que
+                transforma el código en interfaces visuales. Su correcta
+                implementación es determinante para el éxito de cualquier
+                aplicación moderna.
               </p>
               <p className="text-slate-700 dark:text-slate-300">
-                React revolucionó el desarrollo frontend con su enfoque
-                declarativo, permitiendo crear Single Page Applications (SPAs) y
-                estableciendo una clara separación entre la definición de la
-                interfaz y su implementación real en el DOM.
+                <strong>
+                  Una buena estrategia de renderizado impacta directamente en:
+                </strong>
+              </p>
+              <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300">
+                <li>La experiencia de usuario (UX)</li>
+                <li>El posicionamiento en buscadores (SEO)</li>
+                <li>El rendimiento y la escalabilidad</li>
+                <li>Los costes de desarrollo y mantenimiento</li>
+              </ul>
+              <p className="text-slate-700 dark:text-slate-300">
+                <strong>La evolución en React:</strong> Desde su nacimiento en
+                2013, React transformó el desarrollo frontend con su enfoque
+                declarativo y su Virtual DOM.
+              </p>
+              <p className="text-slate-700 dark:text-slate-300">
+                <strong>De SPAs a arquitecturas modernas:</strong> El viaje
+                desde las Single Page Applications tradicionales hasta
+                frameworks como Next.js, Remix y React Server Components
+                representa una respuesta a las limitaciones del renderizado
+                exclusivo en cliente.
+              </p>
+              <p className="text-slate-700 dark:text-slate-300">
+                <strong>En esta guía:</strong> Se analizan las diferentes
+                estrategias disponibles, sus ventajas, desventajas y casos de
+                uso óptimos para poder tomar decisiones informadas en cualquier
+                proyecto.
               </p>
             </div>
           </motion.div>
