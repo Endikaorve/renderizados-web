@@ -15,7 +15,7 @@ export function ComparisonTable() {
     { id: 'ssr', name: 'Server Side Rendering (SSR)' },
     { id: 'streaming', name: 'SSR con Streaming' },
     { id: 'ppr', name: 'Partial Pre-rendering (PPR)' },
-  ];
+  ] as const;
 
   const metrics = [
     {
@@ -177,7 +177,7 @@ export function ComparisonTable() {
         ppr: { icon: <X className="h-5 w-5 text-red-500" />, note: 'Alta' },
       },
     },
-  ];
+  ] as const;
 
   return (
     <section ref={ref} className="py-16 md:py-24">
