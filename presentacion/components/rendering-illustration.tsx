@@ -39,39 +39,44 @@ export function RenderingIllustration({ type }: RenderingIllustrationProps) {
               <Monitor className="h-10 w-10 text-blue-500" />
             </div>
 
-            <div className="space-y-4 mt-6">
-              <motion.div
-                className="h-4 bg-slate-200 dark:bg-slate-600 rounded w-full"
-                initial={{ width: '30%' }}
-                animate={{ width: '100%' }}
-                transition={{
-                  duration: 2,
-                  repeat: Number.POSITIVE_INFINITY,
-                  repeatType: 'reverse',
-                }}
-              />
-              <motion.div
-                className="h-4 bg-slate-200 dark:bg-slate-600 rounded w-3/4"
-                initial={{ width: '20%' }}
-                animate={{ width: '75%' }}
-                transition={{
-                  duration: 2.5,
-                  repeat: Number.POSITIVE_INFINITY,
-                  repeatType: 'reverse',
-                  delay: 0.3,
-                }}
-              />
-              <motion.div
-                className="h-4 bg-slate-200 dark:bg-slate-600 rounded w-1/2"
-                initial={{ width: '10%' }}
-                animate={{ width: '50%' }}
-                transition={{
-                  duration: 3,
-                  repeat: Number.POSITIVE_INFINITY,
-                  repeatType: 'reverse',
-                  delay: 0.6,
-                }}
-              />
+            <div className="mt-4 p-3 bg-white dark:bg-slate-600 rounded-lg shadow-sm">
+              <div className="text-xs text-slate-500 dark:text-slate-300 mb-2">
+                Contenido renderizado en cliente
+              </div>
+              <div className="space-y-1">
+                <motion.div
+                  className="h-2 bg-slate-200 dark:bg-slate-600 rounded w-full"
+                  initial={{ width: '30%' }}
+                  animate={{ width: '100%' }}
+                  transition={{
+                    duration: 2,
+                    repeat: Number.POSITIVE_INFINITY,
+                    repeatType: 'reverse',
+                  }}
+                />
+                <motion.div
+                  className="h-2 bg-slate-200 dark:bg-slate-600 rounded w-3/4"
+                  initial={{ width: '20%' }}
+                  animate={{ width: '75%' }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Number.POSITIVE_INFINITY,
+                    repeatType: 'reverse',
+                    delay: 0.3,
+                  }}
+                />
+                <motion.div
+                  className="h-2 bg-slate-200 dark:bg-slate-600 rounded w-1/2"
+                  initial={{ width: '10%' }}
+                  animate={{ width: '50%' }}
+                  transition={{
+                    duration: 3,
+                    repeat: Number.POSITIVE_INFINITY,
+                    repeatType: 'reverse',
+                    delay: 0.6,
+                  }}
+                />
+              </div>
             </div>
 
             <div className="text-center mt-4">
