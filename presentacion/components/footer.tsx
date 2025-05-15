@@ -7,7 +7,16 @@ export function Footer() {
           Renderizado Web en React
         </p>
         <p className="text-xs text-slate-400 dark:text-slate-500 mt-2">
-          Creado por Endika Orube con Next.js, Tailwind CSS y Framer Motion
+          Creado por{' '}
+          <a
+            href="https://www.linkedin.com/in/endikaorube/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium transition-colors hover:text-blue-600 dark:hover:text-blue-400 underline"
+          >
+            Endika Orube
+          </a>{' '}
+          con Next.js, Tailwind CSS y Framer Motion
         </p>
       </div>
     </footer>

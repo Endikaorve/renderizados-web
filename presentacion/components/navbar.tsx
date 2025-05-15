@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
-import { Moon, Sun, Menu, X, Github } from 'lucide-react';
+import { Moon, Sun, Menu, X, Github, Linkedin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -32,10 +32,33 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-950/80">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <div className="flex items-center">
+        <div className="flex items-center space-x-4">
           <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
             🚀 RPTI DxP 🚀
           </span>
+
+          {/* Social Links - Mobile: visible, Desktop: hidden */}
+          <div className="flex md:hidden items-center space-x-3">
+            <a
+              href="https://www.linkedin.com/in/endikaorube/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-700 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400"
+              aria-label="LinkedIn Profile"
+            >
+              <Linkedin className="h-5 w-5" />
+            </a>
+
+            <a
+              href="https://github.com/Endikaorve/renderizados-web"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-700 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400"
+              aria-label="GitHub Repository"
+            >
+              <Github className="h-5 w-5" />
+            </a>
+          </div>
         </div>
 
         {/* Desktop Navigation */}
@@ -51,16 +74,29 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <a
-            href="https://github.com/Endikaorve/renderizados-web"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-slate-700 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400"
-            aria-label="GitHub Repository"
-          >
-            <Github className="h-5 w-5" />
-          </a>
+        <div className="flex items-center">
+          {/* Social Links - Mobile: hidden, Desktop: visible */}
+          <div className="hidden md:flex items-center space-x-4 mr-4">
+            <a
+              href="https://www.linkedin.com/in/endikaorube/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-700 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400"
+              aria-label="LinkedIn Profile"
+            >
+              <Linkedin className="h-5 w-5" />
+            </a>
+
+            <a
+              href="https://github.com/Endikaorve/renderizados-web"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-700 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400"
+              aria-label="GitHub Repository"
+            >
+              <Github className="h-5 w-5" />
+            </a>
+          </div>
 
           {mounted && (
             <Button
@@ -68,6 +104,7 @@ export function Navbar() {
               size="icon"
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               aria-label="Toggle theme"
+              className="ml-2"
             >
               {theme === 'dark' ? (
                 <Sun className="h-5 w-5" />
@@ -81,7 +118,7 @@ export function Navbar() {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="md:hidden ml-2"
             onClick={toggleMenu}
             aria-label="Toggle menu"
           >
