@@ -17,6 +17,17 @@ export function HeroSection() {
             Estrategias de Renderizado Web en React
           </h1>
 
+          <motion.div
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="flex justify-center mb-6"
+          >
+            <span className="inline-block px-4 py-1 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-200 dark:border-blue-800 text-sm font-semibold text-blue-600 dark:text-blue-400">
+              By Endika Orube
+            </span>
+          </motion.div>
+
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
