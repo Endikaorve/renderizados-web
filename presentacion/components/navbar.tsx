@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
-import { Moon, Sun, Menu, X } from 'lucide-react';
+import { Moon, Sun, Menu, X, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -52,6 +52,16 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <a
+            href="https://github.com/Endikaorve/renderizados-web"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-slate-700 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400"
+            aria-label="GitHub Repository"
+          >
+            <Github className="h-5 w-5" />
+          </a>
+
           {mounted && (
             <Button
               variant="ghost"
